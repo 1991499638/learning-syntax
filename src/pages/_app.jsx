@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import { useRouter } from 'next/router';
 import { slugifyWithCounter } from '@sindresorhus/slugify'
 
 import { Layout } from '@/components/Layout'
@@ -61,6 +62,18 @@ export default function App({ Component, pageProps }) {
     ? collectHeadings(pageProps.markdoc.content)
     : []
 
+    const router = useRouter();
+    const  pu  = router.asPath;
+    const parameterName = 'pu';
+    const regex = new RegExp(`${parameterName}=(.*?)(&|$)`);
+    const match = pu.match(regex);
+    const parameterValue = match ? match[1] : '';
+    // console.log(parameterValue!=='')
+    let pageUrl='navigation';
+    if(parameterValue!==''){
+      pageUrl=parameterValue
+    }
+
   // console.log(description === undefined)
   let content;
 
@@ -70,7 +83,7 @@ export default function App({ Component, pageProps }) {
     )
   }else{
     content=(
-      <Layout title={title} tableOfContents={tableOfContents}>
+      <Layout pageUrl={pageUrl} title={title} tableOfContents={tableOfContents}>
         <Component {...pageProps} />
       </Layout>
     )
@@ -81,6 +94,9 @@ export default function App({ Component, pageProps }) {
   if(`${pageProps.markdoc?.frontmatter.title}`===`undefined`){
     pTitle=(<title>index - docs</title>)
   }
+
+
+
   return (
     <>
       <Head>
