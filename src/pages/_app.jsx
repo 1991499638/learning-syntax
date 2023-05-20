@@ -95,7 +95,7 @@ export default function App({ Component, pageProps }) {
     pTitle=(<title>index - docs</title>)
   }
 
-
+// console.log(`${window.location.href}`)
 
   return (
     <>

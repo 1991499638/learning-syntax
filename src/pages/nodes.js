@@ -1,7 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 
-const folderPath = '/path/to/folder'; // 指定文件夹路径
+const folderPath = './docs'; // 指定文件夹路径
+const outPath = '../routes';
 
 const navigation = []; // 存储导航数据的数组
 
@@ -29,3 +30,6 @@ function readFilesInFolder(folderPath) {
 readFilesInFolder(folderPath);
 
 console.log('export const navigation =', JSON.stringify(navigation, null, 2));
+// 将数据写入指定的 JSON 文件中  
+const jsonFilePath = path.join(outPath, 'links.json');  
+fs.writeFileSync(jsonFilePath, JSON.stringify(navigation, null, 2));  

@@ -1,0 +1,86 @@
+[
+  {
+    "title": "architecture-guide",
+    "href": "/docs/architecture-guide"
+  },
+  {
+    "title": "basics-of-time-travel",
+    "href": "/docs/basics-of-time-travel"
+  },
+  {
+    "title": "cacheadvance-flush",
+    "href": "/docs/cacheadvance-flush"
+  },
+  {
+    "title": "cacheadvance-predict",
+    "href": "/docs/cacheadvance-predict"
+  },
+  {
+    "title": "cacheadvance-regret",
+    "href": "/docs/cacheadvance-regret"
+  },
+  {
+    "title": "cacheadvance-revert",
+    "href": "/docs/cacheadvance-revert"
+  },
+  {
+    "title": "compile-time-caching",
+    "href": "/docs/compile-time-caching"
+  },
+  {
+    "title": "design-principles",
+    "href": "/docs/design-principles"
+  },
+  {
+    "title": "how-to-contribute",
+    "href": "/docs/how-to-contribute"
+  },
+  {
+    "title": "index",
+    "href": "/docs/index"
+  },
+  {
+    "title": "installation",
+    "href": "/docs/installation"
+  },
+  {
+    "title": "introduction-to-string-theory",
+    "href": "/docs/introduction-to-string-theory"
+  },
+  {
+    "title": "neuralink-integration",
+    "href": "/docs/neuralink-integration"
+  },
+  {
+    "title": "predicting-user-behavior",
+    "href": "/docs/predicting-user-behavior"
+  },
+  {
+    "title": "predictive-data-generation",
+    "href": "/docs/predictive-data-generation"
+  },
+  {
+    "title": "temporal-paradoxes",
+    "href": "/docs/temporal-paradoxes"
+  },
+  {
+    "title": "test",
+    "href": "/docs/test"
+  },
+  {
+    "title": "testing",
+    "href": "/docs/testing"
+  },
+  {
+    "title": "the-butterfly-effect",
+    "href": "/docs/the-butterfly-effect"
+  },
+  {
+    "title": "understanding-caching",
+    "href": "/docs/understanding-caching"
+  },
+  {
+    "title": "writing-plugins",
+    "href": "/docs/writing-plugins"
+  }
+]

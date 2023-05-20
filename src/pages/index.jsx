@@ -476,7 +476,7 @@ export default function Example() {
                 Sign in
               </a>
               <a
-                href="#"
+                href="/setting"
                 className="inline-flex items-center justify-center whitespace-nowrap rounded-md border border-transparent bg-purple-100 py-2 px-4 text-base font-medium text-purple-600 hover:bg-purple-200"
               >
                 Sign up
