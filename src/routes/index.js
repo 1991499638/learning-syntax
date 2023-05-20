@@ -2,18 +2,16 @@ export const navigation = [
   {
     title: 'Introduction',
     links: [
-      { title: 'Getting started', href: '/' },
+      { title: 'Getting started', href: '/docs' },
       { title: 'Installation', href: '/docs/installation' },
+      { title: '测试', href: '/docs/test' },
     ],
   },
   {
     title: 'Core concepts',
     links: [
       { title: 'Understanding caching', href: '/docs/understanding-caching' },
-      {
-        title: 'Predicting user behavior',
-        href: '/docs/predicting-user-behavior',
-      },
+      {title: 'Predicting user behavior',href: '/docs/predicting-user-behavior',},
       { title: 'Basics of time-travel', href: '/docs/basics-of-time-travel' },
       {
         title: 'Introduction to string theory',

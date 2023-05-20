@@ -61,15 +61,33 @@ export default function App({ Component, pageProps }) {
     ? collectHeadings(pageProps.markdoc.content)
     : []
 
-  return (
-    <>
-      <Head>
-        <title>{pageTitle}</title>
-        {description && <meta name="description" content={description} />}
-      </Head>
+  // console.log(description === undefined)
+  let content;
+
+  if(description === undefined){
+    content=(
+      <Component {...pageProps} />
+    )
+  }else{
+    content=(
       <Layout title={title} tableOfContents={tableOfContents}>
         <Component {...pageProps} />
       </Layout>
+    )
+  }
+  // console.log(`${pageProps.markdoc?.frontmatter.title}`===`undefined`)
+
+  let pTitle=(<title>{pageTitle}</title>)
+  if(`${pageProps.markdoc?.frontmatter.title}`===`undefined`){
+    pTitle=(<title>index - docs</title>)
+  }
+  return (
+    <>
+      <Head>
+        {pTitle}
+        {description && <meta name="description" content={description} />}
+      </Head>
+      {content}
     </>
   )
 }
