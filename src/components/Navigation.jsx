@@ -10,7 +10,7 @@ export function Navigation({ navigation, className }) {
       <ul role="list" className="space-y-9">
         {navigation.map((section) => (
           <li key={section.title}>
-            <details className="list-none" open='true' >
+            <details className="list-none" open={true} >
             <summary className="-ml-3 font-display font-semibold text-slate-900 dark:text-white">
               {section.title}
             </summary>

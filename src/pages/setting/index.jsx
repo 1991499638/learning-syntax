@@ -13,11 +13,9 @@
   ```
 */
 import { Fragment, useState } from 'react'
-import { Dialog, Switch, Transition } from '@headlessui/react'
+import { Dialog, Transition } from '@headlessui/react'
 import {
   ArrowLeftOnRectangleIcon,
-  Bars3BottomLeftIcon,
-  BellIcon,
   BriefcaseIcon,
   ChatBubbleOvalLeftEllipsisIcon,
   CogIcon,
@@ -26,38 +24,84 @@ import {
   QuestionMarkCircleIcon,
   UsersIcon,
   XMarkIcon,
+  Bars3BottomLeftIcon,
+  BellIcon,
 } from '@heroicons/react/24/outline'
 import { MagnifyingGlassIcon } from '@heroicons/react/20/solid'
 
+import { Search } from '@/components/Search'
+import Settings from './content/settings'
+import Applications from './content/Applications'
+import Homes from './content/Home'
+import Jobs from './content/Jobs'
+import Messages from './content/Messages'
+import Team from './content/Team'
+
+let flag='Settings';
 const navigation = [
-  { name: 'Home', href: '#', icon: HomeIcon, current: false },
-  { name: 'Jobs', href: '#', icon: BriefcaseIcon, current: false },
-  { name: 'Applications', href: '#', icon: DocumentMagnifyingGlassIcon, current: false },
-  { name: 'Messages', href: '#', icon: ChatBubbleOvalLeftEllipsisIcon, current: false },
-  { name: 'Team', href: '#', icon: UsersIcon, current: false },
-  { name: 'Settings', href: '#', icon: CogIcon, current: true },
+  { name: 'Home', href: '#Homes', icon: HomeIcon, current: ('Home'==flag) },
+  { name: 'Jobs', href: '#Jobs', icon: BriefcaseIcon, current: ('Jobs'==flag) },
+  { name: 'Applications', href: '#Applications', icon: DocumentMagnifyingGlassIcon, current: ('Applications'==flag) },
+  { name: 'Messages', href: '#Messages', icon: ChatBubbleOvalLeftEllipsisIcon, current: ('Messages'==flag) },
+  { name: 'Team', href: '#Team', icon: UsersIcon, current: ('Team'==flag) },
+  { name: 'Settings', href: '#Settings', icon: CogIcon, current: ('Settings'==flag) },
 ]
 const secondaryNavigation = [
   { name: 'Help', href: '#', icon: QuestionMarkCircleIcon },
   { name: 'Logout', href: '#', icon: ArrowLeftOnRectangleIcon },
 ]
-const tabs = [
-  { name: 'General', href: '#', current: true },
-  { name: 'Password', href: '#', current: false },
-  { name: 'Notifications', href: '#', current: false },
-  { name: 'Plan', href: '#', current: false },
-  { name: 'Billing', href: '#', current: false },
-  { name: 'Team Members', href: '#', current: false },
-]
+let contentArea=(<Settings />);
+
+function setArea(name){
+  switch (name) {
+    case 'Home':
+      contentArea=(<Homes />);
+      break;
+    case 'Jobs':
+      contentArea=(<Jobs />);
+      break;
+    case 'Applications':
+      contentArea=(<Applications />);
+      break;
+    case 'Messages':
+      contentArea=(<Messages />);
+      break;
+    case 'Team':
+      contentArea=(<Team />);
+      break;
+    case 'Settings':
+      contentArea=(<Settings />);
+      break;
+  
+    default:
+      break;
+  }
+}
+
+function turnNav(){
+  navigation.map((item) => {
+    if(item.current){
+      contentArea=setArea(item.name);
+    }
+  })
+}
+
+function aClick(now){
+  console.log(now)
+  // turnNav()
+}
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function Example() {
+function home(){
+  window.location.href=window.location.origin
+}
+
+export default function Home() {
+  
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const [automaticTimezoneEnabled, setAutomaticTimezoneEnabled] = useState(true)
-  const [autoUpdateApplicantDataEnabled, setAutoUpdateApplicantDataEnabled] = useState(false)
 
   return (
     <>
@@ -114,8 +158,8 @@ export default function Example() {
                       </button>
                     </div>
                   </Transition.Child>
-                  <div className="flex flex-shrink-0 items-center px-4">
-                    <img
+                  <div className="flex flex-shrink-0 items-center px-4" >
+                    <img 
                       className="h-8 w-auto"
                       src="https://tailwindui.com/img/logos/mark.svg?color=purple&shade=600"
                       alt="Easywire"
@@ -178,7 +222,7 @@ export default function Example() {
           {/* Sidebar component, swap this element with another sidebar if you like */}
           <nav className="flex flex-grow flex-col overflow-y-auto border-r border-gray-200 bg-gray-50 pt-5 pb-4">
             <div className="flex flex-shrink-0 items-center px-4">
-              <img
+              <img onClick={home}
                 className="h-8 w-auto"
                 src="https://tailwindui.com/img/logos/mark.svg?color=purple&shade=600"
                 alt="Easywire"
@@ -187,14 +231,14 @@ export default function Example() {
             <div className="mt-5 flex-grow">
               <div className="space-y-1">
                 {navigation.map((item) => (
-                  <a
+                  <a onClick={aClick(item.name)}
                     key={item.name}
                     href={item.href}
                     className={classNames(
                       item.current
-                        ? 'bg-purple-50 border-purple-600 text-purple-600'
-                        : 'border-transparent text-gray-600 hover:text-gray-900 hover:bg-gray-50',
-                      'group border-l-4 py-2 px-3 flex items-center text-sm font-medium'
+                        ? 'bg-purple-50 border-purple-600 text-purple-600 cursor-pointer'
+                        : 'border-transparent text-gray-600 hover:text-gray-900 hover:bg-gray-50 ',
+                      'group border-l-4 py-2 px-3 flex items-center text-sm font-medium select-none'
                     )}
                   >
                     <item.icon
@@ -211,7 +255,7 @@ export default function Example() {
             </div>
             <div className="block w-full flex-shrink-0">
               {secondaryNavigation.map((item) => (
-                <a
+                <a 
                   key={item.name}
                   href={item.href}
                   className="group flex items-center border-l-4 border-transparent py-2 px-3 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900"
@@ -225,294 +269,23 @@ export default function Example() {
         </div>
 
         {/* Content area */}
-        <div className="md:pl-64">
+      <div className="md:pl-64">
           <div className="mx-auto flex max-w-4xl flex-col md:px-8 xl:px-0">
-            <div className="sticky top-0 z-10 flex h-16 flex-shrink-0 border-b border-gray-200 bg-white">
-              <button
-                type="button"
-                className="border-r border-gray-200 px-4 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-purple-500 md:hidden"
-                onClick={() => setSidebarOpen(true)}
-              >
-                <span className="sr-only">Open sidebar</span>
-                <Bars3BottomLeftIcon className="h-6 w-6" aria-hidden="true" />
-              </button>
-              <div className="flex flex-1 justify-between px-4 md:px-0">
-                <div className="flex flex-1">
-                  <form className="flex w-full md:ml-0" action="#" method="GET">
-                    <label htmlFor="mobile-search-field" className="sr-only">
-                      Search
-                    </label>
-                    <label htmlFor="desktop-search-field" className="sr-only">
-                      Search
-                    </label>
-                    <div className="relative w-full text-gray-400 focus-within:text-gray-600">
-                      <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center">
-                        <MagnifyingGlassIcon className="h-5 w-5 flex-shrink-0" aria-hidden="true" />
-                      </div>
-                      <input
-                        name="mobile-search-field"
-                        id="mobile-search-field"
-                        className="h-full w-full border-transparent py-2 pl-8 pr-3 text-base text-gray-900 placeholder-gray-500 focus:border-transparent focus:placeholder-gray-400 focus:outline-none focus:ring-0 sm:hidden"
-                        placeholder="Search"
-                        type="search"
-                      />
-                      <input
-                        name="desktop-search-field"
-                        id="desktop-search-field"
-                        className="hidden h-full w-full border-transparent py-2 pl-8 pr-3 text-sm text-gray-900 placeholder-gray-500 focus:border-transparent focus:placeholder-gray-400 focus:outline-none focus:ring-0 sm:block"
-                        placeholder="Search jobs, applicants, and more"
-                        type="search"
-                      />
-                    </div>
-                  </form>
-                </div>
-                <div className="ml-4 flex items-center md:ml-6">
-                  <button
-                    type="button"
-                    className="rounded-full bg-white p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
-                  >
-                    <BellIcon className="h-6 w-6" aria-hidden="true" />
-                    <span className="sr-only">View notifications</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <main className="flex-1">
-              <div className="relative mx-auto max-w-4xl md:px-8 xl:px-0">
-                <div className="pt-10 pb-16">
-                  <div className="px-4 sm:px-6 md:px-0">
-                    <h1 className="text-3xl font-bold tracking-tight text-gray-900">Settings</h1>
+              <div className="sticky top-0 z-10 flex h-16 flex-shrink-0 border-b border-gray-200 bg-white">
+                  
+                  <div className="m-2 flex flex-1 justify-center px-4 md:px-0">
+                    <Search />
                   </div>
-                  <div className="px-4 sm:px-6 md:px-0">
-                    <div className="py-6">
-                      {/* Tabs */}
-                      <div className="lg:hidden">
-                        <label htmlFor="selected-tab" className="sr-only">
-                          Select a tab
-                        </label>
-                        <select
-                          id="selected-tab"
-                          name="selected-tab"
-                          className="mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-purple-500 focus:outline-none focus:ring-purple-500 sm:text-sm"
-                          defaultValue={tabs.find((tab) => tab.current).name}
-                        >
-                          {tabs.map((tab) => (
-                            <option key={tab.name}>{tab.name}</option>
-                          ))}
-                        </select>
-                      </div>
-                      <div className="hidden lg:block">
-                        <div className="border-b border-gray-200">
-                          <nav className="-mb-px flex space-x-8">
-                            {tabs.map((tab) => (
-                              <a
-                                key={tab.name}
-                                href={tab.href}
-                                className={classNames(
-                                  tab.current
-                                    ? 'border-purple-500 text-purple-600'
-                                    : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700',
-                                  'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm'
-                                )}
-                              >
-                                {tab.name}
-                              </a>
-                            ))}
-                          </nav>
-                        </div>
-                      </div>
-
-                      {/* Description list with inline editing */}
-                      <div className="mt-10 divide-y divide-gray-200">
-                        <div className="space-y-1">
-                          <h3 className="text-lg font-medium leading-6 text-gray-900">Profile</h3>
-                          <p className="max-w-2xl text-sm text-gray-500">
-                            This information will be displayed publicly so be careful what you share.
-                          </p>
-                        </div>
-                        <div className="mt-6">
-                          <dl className="divide-y divide-gray-200">
-                            <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5">
-                              <dt className="text-sm font-medium text-gray-500">Name</dt>
-                              <dd className="mt-1 flex text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                                <span className="flex-grow">Chelsea Hagon</span>
-                                <span className="ml-4 flex-shrink-0">
-                                  <button
-                                    type="button"
-                                    className="rounded-md bg-white font-medium text-purple-600 hover:text-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
-                                  >
-                                    Update
-                                  </button>
-                                </span>
-                              </dd>
-                            </div>
-                            <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5 sm:pt-5">
-                              <dt className="text-sm font-medium text-gray-500">Photo</dt>
-                              <dd className="mt-1 flex text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                                <span className="flex-grow">
-                                  <img
-                                    className="h-8 w-8 rounded-full"
-                                    src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                    alt=""
-                                  />
-                                </span>
-                                <span className="ml-4 flex flex-shrink-0 items-start space-x-4">
-                                  <button
-                                    type="button"
-                                    className="rounded-md bg-white font-medium text-purple-600 hover:text-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
-                                  >
-                                    Update
-                                  </button>
-                                  <span className="text-gray-300" aria-hidden="true">
-                                    |
-                                  </span>
-                                  <button
-                                    type="button"
-                                    className="rounded-md bg-white font-medium text-purple-600 hover:text-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
-                                  >
-                                    Remove
-                                  </button>
-                                </span>
-                              </dd>
-                            </div>
-                            <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5 sm:pt-5">
-                              <dt className="text-sm font-medium text-gray-500">Email</dt>
-                              <dd className="mt-1 flex text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                                <span className="flex-grow">chelsea.hagon@example.com</span>
-                                <span className="ml-4 flex-shrink-0">
-                                  <button
-                                    type="button"
-                                    className="rounded-md bg-white font-medium text-purple-600 hover:text-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
-                                  >
-                                    Update
-                                  </button>
-                                </span>
-                              </dd>
-                            </div>
-                            <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:border-b sm:border-gray-200 sm:py-5">
-                              <dt className="text-sm font-medium text-gray-500">Job title</dt>
-                              <dd className="mt-1 flex text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                                <span className="flex-grow">Human Resources Manager</span>
-                                <span className="ml-4 flex-shrink-0">
-                                  <button
-                                    type="button"
-                                    className="rounded-md bg-white font-medium text-purple-600 hover:text-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
-                                  >
-                                    Update
-                                  </button>
-                                </span>
-                              </dd>
-                            </div>
-                          </dl>
-                        </div>
-                      </div>
-
-                      <div className="mt-10 divide-y divide-gray-200">
-                        <div className="space-y-1">
-                          <h3 className="text-lg font-medium leading-6 text-gray-900">Account</h3>
-                          <p className="max-w-2xl text-sm text-gray-500">
-                            Manage how information is displayed on your account.
-                          </p>
-                        </div>
-                        <div className="mt-6">
-                          <dl className="divide-y divide-gray-200">
-                            <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5">
-                              <dt className="text-sm font-medium text-gray-500">Language</dt>
-                              <dd className="mt-1 flex text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                                <span className="flex-grow">English</span>
-                                <span className="ml-4 flex-shrink-0">
-                                  <button
-                                    type="button"
-                                    className="rounded-md bg-white font-medium text-purple-600 hover:text-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
-                                  >
-                                    Update
-                                  </button>
-                                </span>
-                              </dd>
-                            </div>
-                            <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5 sm:pt-5">
-                              <dt className="text-sm font-medium text-gray-500">Date format</dt>
-                              <dd className="mt-1 flex text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                                <span className="flex-grow">DD-MM-YYYY</span>
-                                <span className="ml-4 flex flex-shrink-0 items-start space-x-4">
-                                  <button
-                                    type="button"
-                                    className="rounded-md bg-white font-medium text-purple-600 hover:text-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
-                                  >
-                                    Update
-                                  </button>
-                                  <span className="text-gray-300" aria-hidden="true">
-                                    |
-                                  </span>
-                                  <button
-                                    type="button"
-                                    className="rounded-md bg-white font-medium text-purple-600 hover:text-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
-                                  >
-                                    Remove
-                                  </button>
-                                </span>
-                              </dd>
-                            </div>
-                            <Switch.Group as="div" className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5 sm:pt-5">
-                              <Switch.Label as="dt" className="text-sm font-medium text-gray-500" passive>
-                                Automatic timezone
-                              </Switch.Label>
-                              <dd className="mt-1 flex text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                                <Switch
-                                  checked={automaticTimezoneEnabled}
-                                  onChange={setAutomaticTimezoneEnabled}
-                                  className={classNames(
-                                    automaticTimezoneEnabled ? 'bg-purple-600' : 'bg-gray-200',
-                                    'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 sm:ml-auto'
-                                  )}
-                                >
-                                  <span
-                                    aria-hidden="true"
-                                    className={classNames(
-                                      automaticTimezoneEnabled ? 'translate-x-5' : 'translate-x-0',
-                                      'inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out'
-                                    )}
-                                  />
-                                </Switch>
-                              </dd>
-                            </Switch.Group>
-                            <Switch.Group
-                              as="div"
-                              className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:border-b sm:border-gray-200 sm:py-5"
-                            >
-                              <Switch.Label as="dt" className="text-sm font-medium text-gray-500" passive>
-                                Auto-update applicant data
-                              </Switch.Label>
-                              <dd className="mt-1 flex text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                                <Switch
-                                  checked={autoUpdateApplicantDataEnabled}
-                                  onChange={setAutoUpdateApplicantDataEnabled}
-                                  className={classNames(
-                                    autoUpdateApplicantDataEnabled ? 'bg-purple-600' : 'bg-gray-200',
-                                    'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 sm:ml-auto'
-                                  )}
-                                >
-                                  <span
-                                    aria-hidden="true"
-                                    className={classNames(
-                                      autoUpdateApplicantDataEnabled ? 'translate-x-5' : 'translate-x-0',
-                                      'inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out'
-                                    )}
-                                  />
-                                </Switch>
-                              </dd>
-                            </Switch.Group>
-                          </dl>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </main>
-          </div>
+              </div> 
+            <Homes />
+            <Jobs />
+            <Applications />
+            <Messages />
+            <Team />
+            {contentArea}  
         </div>
+    </div> 
+        
       </div>
     </>
   )

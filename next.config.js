@@ -5,7 +5,7 @@ const nextConfig = {
   reactStrictMode: true,
   pageExtensions: ['js', 'jsx', 'md'],
   experimental: {
-    scrollRestoration: true,
+    // scrollRestoration: true,
   },
 }
 

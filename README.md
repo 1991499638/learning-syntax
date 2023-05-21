@@ -8,7 +8,12 @@ To get started with this template, first install the npm dependencies:
 
 ```bash
 npm install
-cp .env.example .env.local
+cp .env copy.local .env.local
+```
+
+在/routes/links.json生成links，可自定义移植到index.js中
+```bash
+node ./src/nodes.js
 ```
 
 Next, run the development server:
