@@ -8,7 +8,7 @@ To get started with this template, first install the npm dependencies:
 
 ```bash
 npm install
-cp .env copy.local .env.local
+cp .env.copy.local .env.local
 ```
 
 在/routes/links.json生成links，可自定义移植到index.js中
