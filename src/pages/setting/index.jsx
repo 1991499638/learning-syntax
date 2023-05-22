@@ -24,11 +24,8 @@ import {
   QuestionMarkCircleIcon,
   UsersIcon,
   XMarkIcon,
-  Bars3BottomLeftIcon,
-  BellIcon,
 } from '@heroicons/react/24/outline'
-import { MagnifyingGlassIcon } from '@heroicons/react/20/solid'
-
+import Link from 'next/link'
 import { Search } from '@/components/Search'
 import Settings from './content/settings'
 import Applications from './content/Applications'
@@ -37,14 +34,16 @@ import Jobs from './content/Jobs'
 import Messages from './content/Messages'
 import Team from './content/Team'
 
-let flag='Settings';
-const navigation = [
-  { name: 'Home', href: '#Homes', icon: HomeIcon, current: ('Home'==flag) },
-  { name: 'Jobs', href: '#Jobs', icon: BriefcaseIcon, current: ('Jobs'==flag) },
-  { name: 'Applications', href: '#Applications', icon: DocumentMagnifyingGlassIcon, current: ('Applications'==flag) },
-  { name: 'Messages', href: '#Messages', icon: ChatBubbleOvalLeftEllipsisIcon, current: ('Messages'==flag) },
-  { name: 'Team', href: '#Team', icon: UsersIcon, current: ('Team'==flag) },
-  { name: 'Settings', href: '#Settings', icon: CogIcon, current: ('Settings'==flag) },
+let flag;
+flag='#Home'
+
+let navigation = [
+  { name: 'Home', href: '#Home', icon: HomeIcon, current: '#Home' },
+  { name: 'Jobs', href: '#Jobs', icon: BriefcaseIcon, current: '#Jobs' },
+  { name: 'Applications', href: '#Applications', icon: DocumentMagnifyingGlassIcon, current: '#Applications' },
+  { name: 'Messages', href: '#Messages', icon: ChatBubbleOvalLeftEllipsisIcon, current: '#Messages' },
+  { name: 'Team', href: '#Team', icon: UsersIcon, current: '#Team' },
+  { name: 'Settings', href: '#Settings', icon: CogIcon, current: '#Settings' },
 ]
 const secondaryNavigation = [
   { name: 'Help', href: '#', icon: QuestionMarkCircleIcon },
@@ -52,44 +51,10 @@ const secondaryNavigation = [
 ]
 let contentArea=(<Settings />);
 
-function setArea(name){
-  switch (name) {
-    case 'Home':
-      contentArea=(<Homes />);
-      break;
-    case 'Jobs':
-      contentArea=(<Jobs />);
-      break;
-    case 'Applications':
-      contentArea=(<Applications />);
-      break;
-    case 'Messages':
-      contentArea=(<Messages />);
-      break;
-    case 'Team':
-      contentArea=(<Team />);
-      break;
-    case 'Settings':
-      contentArea=(<Settings />);
-      break;
-  
-    default:
-      break;
-  }
+function Active(key){
+  return key===flag
 }
 
-function turnNav(){
-  navigation.map((item) => {
-    if(item.current){
-      contentArea=setArea(item.name);
-    }
-  })
-}
-
-function aClick(now){
-  console.log(now)
-  // turnNav()
-}
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -231,25 +196,25 @@ export default function Home() {
             <div className="mt-5 flex-grow">
               <div className="space-y-1">
                 {navigation.map((item) => (
-                  <a onClick={aClick(item.name)}
+                  <Link onClick={()=>{flag=`#${item.name}`}}
                     key={item.name}
                     href={item.href}
                     className={classNames(
-                      item.current
-                        ? 'bg-purple-50 border-purple-600 text-purple-600 cursor-pointer'
+                      Active(item.current)
+                        ? 'bg-purple-50 border-purple-600 text-purple-600 '
                         : 'border-transparent text-gray-600 hover:text-gray-900 hover:bg-gray-50 ',
-                      'group border-l-4 py-2 px-3 flex items-center text-sm font-medium select-none'
+                      'group border-l-4 py-2 px-3 flex items-center text-sm font-medium select-none cursor-pointer'
                     )}
                   >
                     <item.icon
                       className={classNames(
-                        item.current ? 'text-purple-500' : 'text-gray-400 group-hover:text-gray-500',
+                        Active(item.current) ? 'text-purple-500' : 'text-gray-400 group-hover:text-gray-500',
                         'mr-3 flex-shrink-0 h-6 w-6'
                       )}
                       aria-hidden="true"
                     />
                     {item.name}
-                  </a>
+                  </Link>
                 ))}
               </div>
             </div>
@@ -269,22 +234,22 @@ export default function Home() {
         </div>
 
         {/* Content area */}
-      <div className="md:pl-64">
-          <div className="mx-auto flex max-w-4xl flex-col md:px-8 xl:px-0">
-              <div className="sticky top-0 z-10 flex h-16 flex-shrink-0 border-b border-gray-200 bg-white">
-                  
-                  <div className="m-2 flex flex-1 justify-center px-4 md:px-0">
-                    <Search />
-                  </div>
-              </div> 
-            <Homes />
-            <Jobs />
-            <Applications />
-            <Messages />
-            <Team />
-            {contentArea}  
-        </div>
-    </div> 
+        <div className="md:pl-64">
+            <div className="mx-auto flex max-w-4xl flex-col md:px-8 xl:px-0">
+                <div className="sticky top-0 z-10 flex h-16 flex-shrink-0 border-b border-gray-200 bg-white">
+                    
+                    <div className="m-2 flex flex-1 justify-center px-4 md:px-0">
+                      <Search />
+                    </div>
+                </div> 
+              <Homes />
+              <Jobs />
+              <Applications />
+              <Messages />
+              <Team />
+              {contentArea}  
+          </div>
+        </div> 
         
       </div>
     </>

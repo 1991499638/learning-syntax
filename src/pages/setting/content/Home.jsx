@@ -22,11 +22,11 @@ export default function Homes(){
 
     return (
         <>
-        <main id='Homes' className="flex-1">
+        <main id='Home' className="flex-1">
               <div className="mt-8 relative mx-auto max-w-4xl md:px-8 xl:px-0">
                 <div className="pt-10 pb-16">
                   <div className="px-4 sm:px-6 md:px-0">
-                    <h1 className="text-3xl font-bold tracking-tight text-gray-900">Homes</h1>
+                    <h1 className="text-3xl font-bold tracking-tight text-gray-900">Home</h1>
                   </div>
                   <div className="px-4 sm:px-6 md:px-0">
                     <div className="py-6">

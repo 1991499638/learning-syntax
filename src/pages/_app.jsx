@@ -62,6 +62,7 @@ export default function App({ Component, pageProps }) {
     ? collectHeadings(pageProps.markdoc.content)
     : []
 
+    //大章节选择
     const router = useRouter();
     const  pu  = router.asPath;
     const parameterName = 'pu';
