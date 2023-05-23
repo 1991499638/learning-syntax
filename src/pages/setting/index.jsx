@@ -34,8 +34,9 @@ import Jobs from './content/Jobs'
 import Messages from './content/Messages'
 import Team from './content/Team'
 
-let flag;
-flag='#Home'
+
+
+
 
 let navigation = [
   { name: 'Home', href: '#Home', icon: HomeIcon, current: '#Home' },
@@ -51,9 +52,17 @@ const secondaryNavigation = [
 ]
 let contentArea=(<Settings />);
 
-function Active(key){
-  return key===flag
-}
+// function storage(){
+//   if(typeof localStorage !='undefined'){
+//     if(localStorage.getItem('flag')){
+//       flag=localStorage.getItem('flag')
+//       return flag
+//     }
+//   }
+//   return '#Home'
+// }
+
+
 
 
 function classNames(...classes) {
@@ -61,12 +70,59 @@ function classNames(...classes) {
 }
 
 function home(){
-  window.location.href=window.location.origin
+  if(typeof window!='undefined' && window.location.href!='undefined' && window.location.origin!="undefined"){
+    window.location.href=window.location.origin
+  }
+  
 }
+
+// let isS=false;
+// setTimeout(()=>{isS=true},1000)
+// function isScrolled(){
+//   if(isS){
+//     window.addEventListener('scroll',isScrolled,{passive:true})
+//     console.log(window.scrollY)
+//     handleScroll(window.scrollY)
+//   }else{
+//     console.log(isS)
+//   }
+// }
+
 
 export default function Home() {
   
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [flag, setFlag] = useState("#Home")
+
+  //top:
+// Home : 64px  Jobs:1156  App:2249   Mess:3342      Team:4435     Setting:5528
+
+function handleScroll(top){
+  
+  // console.log('-----'+top)
+  if(top<1035){
+    return "#Home"
+  }else if(top<=2128){
+    return "#Jobs"
+  }else if(top<=3120){
+    return "#Applications"
+  }else if(top<=4210){
+    return "#Messages"
+  }else if(top<=5200){
+    return "#Team"
+  }else if(top>5200){
+    return "#Settings"
+  }
+}
+
+setInterval(()=>{
+  if(typeof window !='undefined' && window.scrollY != 'undefined'){
+    let keyScroll = handleScroll(window.scrollY)
+    // console.log(keyScroll)
+    setFlag(keyScroll)
+  }
+  
+},100)
 
   return (
     <>
@@ -196,11 +252,13 @@ export default function Home() {
             <div className="mt-5 flex-grow">
               <div className="space-y-1">
                 {navigation.map((item) => (
-                  <Link onClick={()=>{flag=`#${item.name}`}}
+                  <Link onClick={()=>setFlag(`#${item.name}`)}
+                    
                     key={item.name}
                     href={item.href}
                     className={classNames(
-                      Active(item.current)
+                      // Active(item.current)
+                      item.current===flag
                         ? 'bg-purple-50 border-purple-600 text-purple-600 '
                         : 'border-transparent text-gray-600 hover:text-gray-900 hover:bg-gray-50 ',
                       'group border-l-4 py-2 px-3 flex items-center text-sm font-medium select-none cursor-pointer'
@@ -208,7 +266,7 @@ export default function Home() {
                   >
                     <item.icon
                       className={classNames(
-                        Active(item.current) ? 'text-purple-500' : 'text-gray-400 group-hover:text-gray-500',
+                        item.current===flag ? 'text-purple-500' : 'text-gray-400 group-hover:text-gray-500',
                         'mr-3 flex-shrink-0 h-6 w-6'
                       )}
                       aria-hidden="true"
@@ -234,10 +292,11 @@ export default function Home() {
         </div>
 
         {/* Content area */}
-        <div className="md:pl-64">
-            <div className="mx-auto flex max-w-4xl flex-col md:px-8 xl:px-0">
+        <div onLoad={()=>{isS=true}} className="md:pl-64">
+            <div
+            id="content"
+            className="mx-auto flex max-w-4xl flex-col md:px-8 xl:px-0">
                 <div className="sticky top-0 z-10 flex h-16 flex-shrink-0 border-b border-gray-200 bg-white">
-                    
                     <div className="m-2 flex flex-1 justify-center px-4 md:px-0">
                       <Search />
                     </div>
@@ -248,10 +307,14 @@ export default function Home() {
               <Messages />
               <Team />
               {contentArea}  
-          </div>
+            </div>
         </div> 
         
       </div>
     </>
   )
 }
+// setInterval(()=>{
+//   isScrolled()
+// },1000)
+// isScrolled()
