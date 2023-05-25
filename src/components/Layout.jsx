@@ -150,7 +150,7 @@ export function Layout({ children, title, tableOfContents, pageUrl }) {
   return (
     <>
       <Header navigation={navigation} />
-
+      {/*  */}
       {isHomePage && <Hero />}
 
       <div className="relative mx-auto flex max-w-8xl justify-center sm:px-2 lg:px-8 xl:px-12">

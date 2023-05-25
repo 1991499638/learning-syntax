@@ -7,6 +7,8 @@ import { Button } from '@/components/Button'
 import { HeroBackground } from '@/components/HeroBackground'
 import blurCyanImage from '@/images/blur-cyan.png'
 import blurIndigoImage from '@/images/blur-indigo.png'
+// import blurCyanImage from '../images/blurCyanImage'
+// import blurIndigoImage from '../images/blurIndigoImage'
 
 const codeLanguage = 'javascript'
 const code = `export default {

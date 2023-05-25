@@ -27,12 +27,12 @@ import {
 } from '@heroicons/react/24/outline'
 import Link from 'next/link'
 import { Search } from '@/components/Search'
-import Settings from './content/settings'
-import Applications from './content/Applications'
-import Homes from './content/Home'
-import Jobs from './content/Jobs'
-import Messages from './content/Messages'
-import Team from './content/Team'
+import Settings from '../../components/content/settings'
+import Applications from '../../components/content/Applications'
+import Homes from '../../components/content/Home'
+import Jobs from '../../components/content/Jobs'
+import Messages from '../../components/content/Messages'
+import Team from '../../components/content/Team'
 
 
 
