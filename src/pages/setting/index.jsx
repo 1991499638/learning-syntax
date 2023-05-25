@@ -16,34 +16,38 @@ import { Fragment, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import {
   ArrowLeftOnRectangleIcon,
-  BriefcaseIcon,
-  ChatBubbleOvalLeftEllipsisIcon,
+  // BriefcaseIcon,
+  // ChatBubbleOvalLeftEllipsisIcon,
   CogIcon,
-  DocumentMagnifyingGlassIcon,
+  // DocumentMagnifyingGlassIcon,
   HomeIcon,
   QuestionMarkCircleIcon,
-  UsersIcon,
+  // UsersIcon,
   XMarkIcon,
 } from '@heroicons/react/24/outline'
 import Link from 'next/link'
 import { Search } from '@/components/Search'
 import Settings from '../../components/content/settings'
-import Applications from '../../components/content/Applications'
+// import Applications from '../../components/content/Applications'
 import Homes from '../../components/content/Home'
-import Jobs from '../../components/content/Jobs'
-import Messages from '../../components/content/Messages'
-import Team from '../../components/content/Team'
+// import Jobs from '../../components/content/Jobs'
+// import Messages from '../../components/content/Messages'
+// import Team from '../../components/content/Team'
 
 
 
 
 
+// let navigation = [
+//   { name: 'Home', href: '#Home', icon: HomeIcon, current: '#Home' },
+//   { name: 'Jobs', href: '#Jobs', icon: BriefcaseIcon, current: '#Jobs' },
+//   { name: 'Applications', href: '#Applications', icon: DocumentMagnifyingGlassIcon, current: '#Applications' },
+//   { name: 'Messages', href: '#Messages', icon: ChatBubbleOvalLeftEllipsisIcon, current: '#Messages' },
+//   { name: 'Team', href: '#Team', icon: UsersIcon, current: '#Team' },
+//   { name: 'Settings', href: '#Settings', icon: CogIcon, current: '#Settings' },
+// ]
 let navigation = [
   { name: 'Home', href: '#Home', icon: HomeIcon, current: '#Home' },
-  { name: 'Jobs', href: '#Jobs', icon: BriefcaseIcon, current: '#Jobs' },
-  { name: 'Applications', href: '#Applications', icon: DocumentMagnifyingGlassIcon, current: '#Applications' },
-  { name: 'Messages', href: '#Messages', icon: ChatBubbleOvalLeftEllipsisIcon, current: '#Messages' },
-  { name: 'Team', href: '#Team', icon: UsersIcon, current: '#Team' },
   { name: 'Settings', href: '#Settings', icon: CogIcon, current: '#Settings' },
 ]
 const secondaryNavigation = [
@@ -51,19 +55,6 @@ const secondaryNavigation = [
   { name: 'Logout', href: '#', icon: ArrowLeftOnRectangleIcon },
 ]
 let contentArea=(<Settings />);
-
-// function storage(){
-//   if(typeof localStorage !='undefined'){
-//     if(localStorage.getItem('flag')){
-//       flag=localStorage.getItem('flag')
-//       return flag
-//     }
-//   }
-//   return '#Home'
-// }
-
-
-
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -76,17 +67,7 @@ function home(){
   
 }
 
-// let isS=false;
-// setTimeout(()=>{isS=true},1000)
-// function isScrolled(){
-//   if(isS){
-//     window.addEventListener('scroll',isScrolled,{passive:true})
-//     console.log(window.scrollY)
-//     handleScroll(window.scrollY)
-//   }else{
-//     console.log(isS)
-//   }
-// }
+
 
 
 export default function Home() {
@@ -100,17 +81,22 @@ export default function Home() {
 function handleScroll(top){
   
   // console.log('-----'+top)
-  if(top<1035){
+  // if(top<1035){
+  //   return "#Home"
+  // }else if(top<=2128){
+  //   return "#Jobs"
+  // }else if(top<=3120){
+  //   return "#Applications"
+  // }else if(top<=4210){
+  //   return "#Messages"
+  // }else if(top<=5200){
+  //   return "#Team"
+  // }else if(top>5200){
+  //   return "#Settings"
+  // }
+  if(top<735){
     return "#Home"
-  }else if(top<=2128){
-    return "#Jobs"
-  }else if(top<=3120){
-    return "#Applications"
-  }else if(top<=4210){
-    return "#Messages"
-  }else if(top<=5200){
-    return "#Team"
-  }else if(top>5200){
+  }else if(top>735){
     return "#Settings"
   }
 }
@@ -302,10 +288,10 @@ setInterval(()=>{
                     </div>
                 </div> 
               <Homes />
-              <Jobs />
+              {/* <Jobs />
               <Applications />
               <Messages />
-              <Team />
+              <Team /> */}
               {contentArea}  
             </div>
         </div> 

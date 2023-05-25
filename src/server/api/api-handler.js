@@ -18,7 +18,9 @@ function apiHandler (handler) {
       //token时间检查
       // global middleware
       await jwtMiddleware(req, res)
-      await checkTokenExpiration(req.auth.exp)
+      if (req.auth) {
+        await checkTokenExpiration(req.auth.exp)
+      }
       // route handler
       await handler[method](req, res)
     } catch (err) {

@@ -1,12 +1,13 @@
 import { expressjwt } from 'express-jwt'
 import util from 'util'
 import getConfig from 'next/config'
+import checkTokenExpiration from './checkTokenExpiration'
 
 const { serverRuntimeConfig } = getConfig()
 
 export { jwtMiddleware }
 
- function jwtMiddleware (req, res) {
+async function jwtMiddleware (req, res) {
   const middleware = expressjwt({ secret: serverRuntimeConfig.secret, algorithms: ['HS256'] }).unless({
     path: [
       // public routes that don't require authentication
@@ -14,8 +15,9 @@ export { jwtMiddleware }
       //  '/api/users/authenticate'
       '/api/register',
       '/api/login'
-
     ]
   })
+
   return util.promisify(middleware)(req, res)
 }
+

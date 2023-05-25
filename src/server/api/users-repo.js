@@ -105,7 +105,7 @@ async function updatePassword (phone, currentPassword, newPassword) {
   user.hash = bcrypt.hashSync(newPassword, 10)
 }
 
-//目前没有验证码功能，后续有待开发
+//目前没有验证码功能，后续有待开发，这个是更改电话号码功能
 async function updatePhone (phone, newPhone) {
   const user = await db.User.findOne({ where: { phone } })
 

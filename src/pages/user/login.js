@@ -74,7 +74,7 @@ export default function Login () {
         let decodeToken = await jwt.decode(response.data.token)
         console.log(response, '登录成功了哥们')
         //抓取用户的token进行持久化的存储
-        console.log(decodeToken, 'rrrrrrrrrrrrrrrrrrrr')
+        console.log(decodeToken.sub, 'rrrrrrrrrrrrrrrrrrrr')
         const userToken = await localStorage.setItem('token', response.data.token)
         console.log(userToken)
         Toast.show({
