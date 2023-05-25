@@ -6,6 +6,5 @@ export default apiHandler({
 })
 
 async function changeinformation (req, res) {
-  console.log(req.token)
-  res.status(200).json(req.token)
+  res.status(200).json('lily is so cute')
 }

@@ -1,4 +1,4 @@
-import { db, errorHandler, jwtMiddleware } from './index'
+import { db, errorHandler, jwtMiddleware, checkTokenExpiration } from './index'
 
 export { apiHandler }
 
@@ -15,9 +15,10 @@ function apiHandler (handler) {
       // init db if required
       if (!db.initialized)
         await db.initialize()
-
+      //token时间检查
       // global middleware
       await jwtMiddleware(req, res)
+      await checkTokenExpiration(req.auth.exp)
       // route handler
       await handler[method](req, res)
     } catch (err) {

@@ -4,6 +4,8 @@ import { Toast } from 'antd-mobile'
 import { judgeCellphone } from '@/utils/utils'
 import { getCode } from '@/server/api'
 import { login } from '@/server/api'
+import jwt from 'jsonwebtoken'
+
 
 export default function Login () {
   const [phone, setPhone] = useState('')
@@ -69,20 +71,25 @@ export default function Login () {
         }
       })
       if (response.status === 200) {
+        let decodeToken = await jwt.decode(response.data.token)
+        console.log(response, '登录成功了哥们')
+        //抓取用户的token进行持久化的存储
+        console.log(decodeToken, 'rrrrrrrrrrrrrrrrrrrr')
+        const userToken = await localStorage.setItem('token', response.data.token)
+        console.log(userToken)
         Toast.show({
           content: '登录成功'
         })
-        console.log(response.data.token, '登录成功了哥们')
-
       } else {
         Toast.show({
           content: '登录失败，请重试'
         })
       }
     } catch (error) {
-      console.error('An error occured during registration', error)
+      console.error('An error occurred during registration', error)
     }
   }
+
 
 
   return (
