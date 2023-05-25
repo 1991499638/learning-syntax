@@ -12,10 +12,11 @@ export const usersRepo = {
   getById,
   create,
   update,
-  //delete:_delete
+  updatePassword,
+  updatePhone
 }
 
-//登录功能的小模块，对账户喝密码进行验证
+//登录功能的小模块，对账户密码进行验证.这里的密码，可是明文哦
 async function authenticate ({ phone, password }) {
   const user = await db.User.scope('withHash').findOne({
     where: { phone }
@@ -35,9 +36,6 @@ async function authenticate ({ phone, password }) {
   //JSON.stringify是自己加的 不然小徐要忘
   const userJson = user.get()
   delete userJson.hash
-  if (userJson.token) {
-    Cookies.set('currentUser', JSON.stringify(userJson))
-  }
 
   return {
     ...userJson,
@@ -94,5 +92,27 @@ async function update (phone, params) {
 
   //copy params properties to 
 }
+//更新密码，这个phone本来想的是，用户提交的时候自动的从它的token中去进行获取
+async function updatePassword (phone, currentPassword, newPassword) {
+  const user = await db.User.findOne({ where: { phone } })
+  if (!user) {
+    throw 'User not found'
+  }
 
-//修改个人信息以及上传他吗的头像，doyouknow
+  if (!bcrypt.compareSync(currentPassword, user.hash)) {
+    throw 'Current password is incorrect'
+  }
+  user.hash = bcrypt.hashSync(newPassword, 10)
+}
+
+//目前没有验证码功能，后续有待开发
+async function updatePhone (phone, newPhone) {
+  const user = await db.User.findOne({ where: { phone } })
+
+  if (!user) throw 'User not found'
+  const existingUser = await db.User.findOne({ where: { phone: newPhone } })
+  if (existingUser) throw 'Phone number' + newPhone + 'is already taken'
+
+  user.phone = newPhone
+  await user.save()
+}
