@@ -14,7 +14,7 @@ async function jwtMiddleware (req, res) {
       // '/api/users/register',
       //  '/api/users/authenticate'
       '/api/register',
-      '/api/login'
+      '/api/login',
     ]
   })
 

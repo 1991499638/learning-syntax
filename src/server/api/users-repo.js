@@ -99,10 +99,10 @@ async function updatePassword (phone, currentPassword, newPassword) {
     throw 'User not found'
   }
 
-  if (!bcrypt.compareSync(currentPassword, user.hash)) {
+  if (!bcrypt.compareSync(currentPassword.toString(), user.hash)) {
     throw 'Current password is incorrect'
   }
-  user.hash = bcrypt.hashSync(newPassword, 10)
+  user.hash = await bcrypt.hashSync(newPassword.toString(), 10)
 }
 
 //目前没有验证码功能，后续有待开发，这个是更改电话号码功能
@@ -116,3 +116,4 @@ async function updatePhone (phone, newPhone) {
   user.phone = newPhone
   await user.save()
 }
+
