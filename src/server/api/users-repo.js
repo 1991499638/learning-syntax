@@ -93,16 +93,16 @@ async function update (phone, params) {
   //copy params properties to 
 }
 //更新密码，这个phone本来想的是，用户提交的时候自动的从它的token中去进行获取
-async function updatePassword (phone, currentPassword, newPassword) {
+async function updatePassword ({ phone, password, newpassword }) {
+  console.log(phone, password, newpassword)
   const user = await db.User.findOne({ where: { phone } })
-  if (!user) {
-    throw 'User not found'
+  if (user) {
+    console.log('youaregoooood')
   }
-
-  if (!bcrypt.compareSync(currentPassword.toString(), user.hash)) {
+  if (!bcrypt.compareSync(password, user.hash)) {
     throw 'Current password is incorrect'
   }
-  user.hash = await bcrypt.hashSync(newPassword.toString(), 10)
+  user.hash = bcrypt.hashSync(newpassword, 10)
 }
 
 //目前没有验证码功能，后续有待开发，这个是更改电话号码功能
