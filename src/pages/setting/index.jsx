@@ -1,51 +1,18 @@
-/*
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/forms'),
-    ],
-  }
-  ```
-*/
-import { Fragment, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import {
   ArrowLeftOnRectangleIcon,
-  // BriefcaseIcon,
-  // ChatBubbleOvalLeftEllipsisIcon,
   CogIcon,
-  // DocumentMagnifyingGlassIcon,
   HomeIcon,
   QuestionMarkCircleIcon,
-  // UsersIcon,
   XMarkIcon,
 } from '@heroicons/react/24/outline'
 import Link from 'next/link'
 import { Search } from '@/components/Search'
 import Settings from '../../components/content/settings'
-// import Applications from '../../components/content/Applications'
 import Homes from '../../components/content/Home'
-// import Jobs from '../../components/content/Jobs'
-// import Messages from '../../components/content/Messages'
-// import Team from '../../components/content/Team'
 
 
-
-
-
-// let navigation = [
-//   { name: 'Home', href: '#Home', icon: HomeIcon, current: '#Home' },
-//   { name: 'Jobs', href: '#Jobs', icon: BriefcaseIcon, current: '#Jobs' },
-//   { name: 'Applications', href: '#Applications', icon: DocumentMagnifyingGlassIcon, current: '#Applications' },
-//   { name: 'Messages', href: '#Messages', icon: ChatBubbleOvalLeftEllipsisIcon, current: '#Messages' },
-//   { name: 'Team', href: '#Team', icon: UsersIcon, current: '#Team' },
-//   { name: 'Settings', href: '#Settings', icon: CogIcon, current: '#Settings' },
-// ]
 let navigation = [
   { name: 'Home', href: '#Home', icon: HomeIcon, current: '#Home' },
   { name: 'Settings', href: '#Settings', icon: CogIcon, current: '#Settings' },
@@ -54,7 +21,6 @@ const secondaryNavigation = [
   { name: 'Help', href: '#', icon: QuestionMarkCircleIcon },
   { name: 'Logout', href: '#', icon: ArrowLeftOnRectangleIcon },
 ]
-let contentArea=(<Settings />);
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -68,8 +34,6 @@ function home(){
 }
 
 
-
-
 export default function Home() {
   
   const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -79,21 +43,6 @@ export default function Home() {
 // Home : 64px  Jobs:1156  App:2249   Mess:3342      Team:4435     Setting:5528
 
 function handleScroll(top){
-  
-  // console.log('-----'+top)
-  // if(top<1035){
-  //   return "#Home"
-  // }else if(top<=2128){
-  //   return "#Jobs"
-  // }else if(top<=3120){
-  //   return "#Applications"
-  // }else if(top<=4210){
-  //   return "#Messages"
-  // }else if(top<=5200){
-  //   return "#Team"
-  // }else if(top>5200){
-  //   return "#Settings"
-  // }
   if(top<735){
     return "#Home"
   }else if(top>735){
@@ -109,6 +58,16 @@ setInterval(()=>{
   }
   
 },100)
+
+// useEffect(()=>{
+//   if(typeof window !='undefined' && window.scrollY != 'undefined'){
+//     let keyScroll = handleScroll(window.scrollY)
+//     // console.log(keyScroll)
+//     setFlag(keyScroll)
+//   }
+// })
+
+
 
   return (
     <>
@@ -265,21 +224,26 @@ setInterval(()=>{
             <div className="block w-full flex-shrink-0">
               {/* 下侧边栏 */}
               {secondaryNavigation.map((item) => (
-                <a 
+                <Link 
+                  onClick={()=>{
+                    if(item.name==='Logout'){
+                      console.log('Logout')
+                    }
+                  }}
                   key={item.name}
                   href={item.href}
                   className="group flex items-center border-l-4 border-transparent py-2 px-3 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900"
                 >
                   <item.icon className="mr-3 h-6 w-6 text-gray-400 group-hover:text-gray-500" aria-hidden="true" />
                   {item.name}
-                </a>
+                </Link>
               ))}
             </div>
           </nav>
         </div>
 
         {/* Content area */}
-        <div onLoad={()=>{isS=true}} className="md:pl-64">
+        <div className="md:pl-64">
             <div
             id="content"
             className="mx-auto flex max-w-4xl flex-col md:px-8 xl:px-0">
@@ -289,11 +253,7 @@ setInterval(()=>{
                     </div>
                 </div> 
               <Homes />
-              {/* <Jobs />
-              <Applications />
-              <Messages />
-              <Team /> */}
-              {contentArea}  
+              <Settings /> 
             </div>
         </div> 
         
@@ -301,7 +261,3 @@ setInterval(()=>{
     </>
   )
 }
-// setInterval(()=>{
-//   isScrolled()
-// },1000)
-// isScrolled()

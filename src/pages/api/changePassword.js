@@ -6,7 +6,6 @@ export default apiHandler({
 
 async function changePwd (req, res) {
   try {
-    console.log(req.body)
     console.log(req.body.phone, req.body.password, req.body.newpassword, 'kisskisskisskisskisskisskisskiss')
     const response = await usersRepo.updatePassword(req.body)
     res.status(200).send(response)

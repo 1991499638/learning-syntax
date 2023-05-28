@@ -1,20 +1,7 @@
-/*
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/forms'),
-    ],
-  }
-  ```
-*/
-import { Fragment } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { Popover, Transition } from '@headlessui/react'
 import {
+  ArrowLeftOnRectangleIcon,
   ArrowPathIcon,
   Bars3Icon,
   BookmarkSquareIcon,
@@ -30,184 +17,114 @@ import {
   XMarkIcon,
 } from '@heroicons/react/24/outline'
 import { CheckIcon as CheckIconMini, ChevronDownIcon } from '@heroicons/react/20/solid'
+import { Search } from '@/components/Search'
+import Link from 'next/link'
+import {getLayoutStatus} from '../utils/LoginStatus'
 
-const solutions = [
-  {
-    name: 'Analytics',
-    description: 'Get a better understanding of where your traffic is coming from.',
-    href: '#',
-    icon: ChartBarIcon,
-  },
-  {
-    name: 'Engagement',
-    description: 'Speak directly to your customers in a more meaningful way.',
-    href: '#',
-    icon: CursorArrowRaysIcon,
-  },
-  { name: 'Security', description: "Your customers' data will be safe and secure.", href: '#', icon: ShieldCheckIcon },
-  {
-    name: 'Integrations',
-    description: "Connect with third-party tools that you're already using.",
-    href: '#',
-    icon: Squares2X2Icon,
-  },
-  {
-    name: 'Automations',
-    description: 'Build strategic funnels that will drive your customers to convert',
-    href: '#',
-    icon: ArrowPathIcon,
-  },
-]
-const callsToAction = [
-  { name: 'Watch Demo', href: '#', icon: PlayIcon },
-  { name: 'Contact Sales', href: '#', icon: PhoneIcon },
-]
-const resources = [
-  {
-    id: 1,
-    name: 'Help Center',
-    description: 'Get all of your questions answered in our forums or contact support.',
-    href: '#',
-    icon: LifebuoyIcon,
-  },
-  {
-    id: 2,
-    name: 'Guides',
-    description: 'Learn how to maximize our platform to get the most out of it.',
-    href: '#',
-    icon: BookmarkSquareIcon,
-  },
-  {
-    id: 3,
-    name: 'Events',
-    description: 'See what meet-ups and other events we might be planning near you.',
-    href: '#',
-    icon: CalendarIcon,
-  },
-  {
-    id: 4,
-    name: 'Security',
-    description: 'Understand how we take your privacy seriously.',
-    href: '#',
-    icon: ShieldCheckIcon,
-  },
-]
-const recentPosts = [
-  { id: 1, name: 'Boost your conversion rate', href: '#' },
-  { id: 2, name: 'How to use search engine optimization to drive traffic to your site', href: '#' },
-  { id: 3, name: 'Improve your customer experience', href: '#' },
-]
 const tiers = [
   {
     name: '区块链',
     href: '/docs',
     priceMonthly: 12,
-    description: 'All the basics for starting a new business',
-    features: ['Potenti felis, in cras at at ligula nunc.', 'Orci neque eget pellentesque.'],
+    description: '区块链是一种去中心化的分布式账本技术，可以确保数据的安全性和透明性。区块链技术的应用有助于提高效率、降低成本、保障隐私',
+    features: ['没有中心化的控制机构，所有参与者共同维护账本。', '数据存储在多个节点上，确保数据的安全性和可靠性。','通过密码学和共识机制确保数据的安全性和不可篡改性。'],
   },
   {
     name: 'BTC',
     href: '/docs',
     priceMonthly: 24,
-    description: 'All the basics for starting a new business',
+    description: 'BTC是一种去中心化的数字货币，发行和交易都是基于区块链技术。BTC的应用场景包括支付、投资、交易等。',
     features: [
-      'Potenti felis, in cras at at ligula nunc. ',
-      'Orci neque eget pellentesque.',
-      'Donec mauris sit in eu tincidunt etiam.',
+      '可以用于支付、投资、交易等场景。',
+      '交易记录不包含个人身份信息，保护用户隐私。',
+      'BTC的总量是有限的，目前为2100万枚。',
     ],
   },
   {
     name: 'ETH',
     href: '/docs',
     priceMonthly: 32,
-    description: 'All the basics for starting a new business',
+    description: 'ETH是一种基于区块链技术的智能合约平台，可以被用于开发去中心化应用。ETH的应用场景包括去中心化金融、数字身份、供应链管理等。',
     features: [
-      'Potenti felis, in cras at at ligula nunc. ',
-      'Orci neque eget pellentesque.',
-      'Donec mauris sit in eu tincidunt etiam.',
-      'Faucibus volutpat magna.',
+      '支持智能合约的开发和执行。',
+      '可以被用于开发去中心化应用（DApps）。',
+      '可以应用于去中心化金融、数字身份、供应链管理等领域。',
+      '受到了广泛关注和支持，开发工具和社区生态丰富。',
     ],
   },
   {
     name: 'Solidity',
     href: '/docs?pu=solidity',
     priceMonthly: 48,
-    description: 'All the basics for starting a new business',
+    description: 'Solidity是一种面向合约的编程语言，被用于开发基于以太坊的智能合约。Solidity支持面向对象编程和函数式编程，语法和结构类似于JavaScript。',
     features: [
-      'Potenti felis, in cras at at ligula nunc. ',
-      'Orci neque eget pellentesque.',
-      'Donec mauris sit in eu tincidunt etiam.',
-      'Faucibus volutpat magna.',
-      'Id sed tellus in varius quisque.',
-      'Risus egestas faucibus.',
-      'Risus cursus ullamcorper.',
+      '专门用于开发智能合约的编程语言。 ',
+      '支持面向对象编程，可以提高代码的复用性和可维护性。',
+      '支持函数式编程，可以提高代码的可读性和可测试性。',
+      '开发工具包括Remix、Truffle等，可以提高开发效率和代码质量。',
     ],
   },
 ]
 const features = [
   {
-    name: 'Invite team members',
-    description: 'Tempor tellus in aliquet eu et sit nulla tellus. Suspendisse est, molestie blandit quis ac. Lacus.',
+    name: '区块链浏览器',
+    description: '一个区块链浏览器可以让用户查看区块链上的交易记录、地址余额和区块链上的其他信息。',
   },
   {
-    name: 'Notifications',
-    description: 'Ornare donec rhoncus vitae nisl velit, neque, mauris dictum duis. Nibh urna non parturient.',
+    name: '钱包',
+    description: '一个钱包可以让用户存储、发送和接收数字货币。',
   },
   {
-    name: 'List view',
-    description: 'Etiam cras augue ornare pretium sit malesuada morbi orci, venenatis. Dictum lacus.',
+    name: '交易所',
+    description: '一个交易所可以让用户交易数字货币，并提供市场深度、价格行情和其他交易相关的信息。',
   },
   {
-    name: 'Boards',
-    description: 'Interdum quam pulvinar turpis tortor, egestas quis diam amet, natoque. Mauris sagittis.',
+    name: '区块链开发工具',
+    description: '一个区块链开发工具可以让开发者轻松地开发和部署智能合约，并提供调试和测试工具。',
   },
   {
-    name: 'Keyboard shortcuts',
-    description: 'Ullamcorper in ipsum ac feugiat. Senectus at aliquam vulputate mollis nec. In at risus odio.',
+    name: 'DApp 浏览器',
+    description: '一个 DApp 浏览器可以让用户访问和使用去中心化应用。',
   },
   {
-    name: 'Reporting',
-    description: 'Magna a vel sagittis aliquam eu amet. Et lorem auctor quam nunc odio. Sed bibendum.',
+    name: '区块链数据分析工具',
+    description: '一个区块链数据分析工具可以让用户分析区块链上的交易数据和其他信息。',
   },
   {
-    name: 'Calendars',
-    description: 'Sed mi, dapibus turpis orci posuere integer. A porta viverra posuere adipiscing turpis.',
-  },
-  {
-    name: 'Mobile app',
-    description: 'Quisque sapien nunc nisl eros. Facilisis sagittis maecenas id dignissim tristique proin sed.',
+    name: '区块链教育和社区',
+    description: '一个区块链教育和社区可以提供区块链知识和技能培训，以及与其他区块链开发者和爱好者交流的平台。',
   },
 ]
 const logos = [
-  { name: 'Tuple', url: 'https://tailwindui.com/img/logos/tuple-logo-purple-200.svg' },
-  { name: 'Mirage', url: 'https://tailwindui.com/img/logos/mirage-logo-purple-200.svg' },
-  { name: 'StaticKit', url: 'https://tailwindui.com/img/logos/statickit-logo-purple-200.svg' },
-  { name: 'Transistor', url: 'https://tailwindui.com/img/logos/transistor-logo-purple-200.svg' },
-  { name: 'Workcation', url: 'https://tailwindui.com/img/logos/workcation-logo-purple-200.svg' },
+  { name: '科技金融', url: 'https://tailwindui.com/img/logos/tuple-logo-purple-200.svg' },
+  { name: '智慧教育', url: 'https://tailwindui.com/img/logos/mirage-logo-purple-200.svg' },
+  { name: '智能治理', url: 'https://tailwindui.com/img/logos/statickit-logo-purple-200.svg' },
+  { name: '网络安全', url: 'https://tailwindui.com/img/logos/transistor-logo-purple-200.svg' },
+  { name: '数字文化', url: 'https://tailwindui.com/img/logos/workcation-logo-purple-200.svg' },
 ]
 const faqs = [
   {
     id: 1,
-    question: 'How do you make holy water?',
+    question: '什么是区块链？',
     answer:
-      'You boil the hell out of it. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.',
+      '区块链是一种去中心化的分布式账本技术，它通过一系列加密算法和协议，实现了数据的安全存储和传输。区块链的特点包括去中心化、分布式、安全、透明等。',
   },
   {
     id: 2,
-    question: "What's the best thing about Switzerland?",
+    question: "BTC和ETH之间有什么区别？它们各自的应用场景是什么？",
     answer:
-      "I don't know, but the flag is a big plus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
+      "BTC和ETH之间的最大区别在于它们的设计目的和应用场景。BTC是一种数字货币，旨在成为一种去中心化的、匿名的、安全的支付工具。ETH则是一种智能合约平台，旨在为开发者提供一个去中心化的、可编程的应用平台。BTC的总量有限，目前为2100万枚，而ETH则没有总量限制。",
   },
   {
     id: 3,
-    question: 'What do you call someone with no body and no nose?',
-    answer: 'Nobody knows. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.',
+    question: 'Solidity是什么？它有哪些特点和优势？',
+    answer: 'Solidity是一种面向合约编程语言，用于编写智能合约。它具有面向对象编程和函数式编程的特点，可以帮助开发者编写安全、高效、易于维护的智能合约。Solidity还提供了丰富的开发工具和库，使得开发者可以更轻松地构建复杂的智能合约。',
   },
   {
     id: 4,
-    question: 'Why do you never see elephants hiding in trees?',
+    question: '如何学习区块链和Web3？',
     answer:
-      "Because they're so good at it. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
+      "学习区块链和Web3需要具备一定的编程和网络基础，可以从以下途径入手：阅读相关的书籍和文档，参加线上或线下的培训课程，加入开发者社区和论坛，参与开源项目的贡献和实践等。此外，需要不断学习和探索新的技术和应用，以跟上区块链和Web3的发展趋势。",
   },
 ]
 const footerNavigation = {
@@ -304,21 +221,94 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
+function LanguageSelect(){
+  return (
+    <>
+      <div className="mt-12 xl:mt-0">
+        <h3 className="text-base font-medium text-white">Language &amp; Currency</h3>
+        <form className="mt-4 space-y-4 sm:max-w-xs">
+          <fieldset className="w-full">
+            <label htmlFor="language" className="sr-only">
+              Language
+            </label>
+            <div className="relative">
+              <select
+                id="language"
+                name="language"
+                className="block w-full rounded-md border border-transparent bg-gray-800 bg-none text-base text-white focus:border-white focus:ring-white sm:text-sm"
+                defaultValue="English"
+              >
+                <option>English</option>
+                <option>French</option>
+                <option>German</option>
+                <option>Japanese</option>
+                <option>Spanish</option>
+              </select>
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2">
+                <ChevronDownIcon className="h-4 w-4 text-white" aria-hidden="true" />
+              </div>
+            </div>
+          </fieldset>
+          <fieldset className="w-full">
+            <label htmlFor="currency" className="sr-only">
+              Currency
+            </label>
+            <div className="relative mt-1.5">
+              <select
+                id="currency"
+                name="currency"
+                className="block w-full rounded-md border border-transparent bg-gray-800 bg-none text-base text-white focus:border-white focus:ring-white sm:text-sm"
+                defaultValue="AUD"
+              >
+                <option>ARS</option>
+                <option>AUD</option>
+                <option>CAD</option>
+                <option>CHF</option>
+                <option>EUR</option>
+                <option>GBP</option>
+                <option>JPY</option>
+                <option>USD</option>
+              </select>
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2">
+                <ChevronDownIcon className="h-4 w-4 text-white" aria-hidden="true" />
+              </div>
+            </div>
+          </fieldset>
+        </form>
+      </div>
+    </>
+  )
+}
+
+
+
 export default function Example() {
+
+let [loginStatus,setloginStatus] =useState(false)
+let [lightStatus,setlightStatus] =useState(true)
+useEffect(() => {
+ if( localStorage.getItem('token')){
+  setloginStatus(true)
+ }else{
+  setloginStatus(false)
+ }
+},[])
+
+
   return (
     <div className="bg-white">
       <Popover className="relative bg-white">
         <div className="mx-auto max-w-7xl px-6">
           <div className="flex items-center justify-between border-b border-gray-200 py-6 md:justify-start md:space-x-10">
             <div className="flex justify-start lg:w-0 lg:flex-1">
-              <a href="#">
+              <Link href="#">
                 <span className="sr-only">Your Company</span>
                 <img
                   className="h-8 w-auto sm:h-10"
                   src="https://tailwindui.com/img/logos/mark.svg?color=purple&shade=600"
                   alt=""
                 />
-              </a>
+              </Link>
             </div>
             <div className="-my-2 -mr-2 md:hidden">
               <Popover.Button className="inline-flex items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-purple-500">
@@ -326,161 +316,39 @@ export default function Example() {
                 <Bars3Icon className="h-6 w-6" aria-hidden="true" />
               </Popover.Button>
             </div>
-            <Popover.Group as="nav" className="hidden space-x-10 md:flex">
-              <Popover className="relative">
-                {({ open }) => (
-                  <>
-                    <Popover.Button
-                      className={classNames(
-                        open ? 'text-gray-900' : 'text-gray-500',
-                        'group inline-flex items-center rounded-md bg-white text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2'
-                      )}
-                    >
-                      <span>Solutions</span>
-                      <ChevronDownIcon
-                        className={classNames(
-                          open ? 'text-gray-600' : 'text-gray-400',
-                          'ml-2 h-5 w-5 group-hover:text-gray-500'
-                        )}
-                        aria-hidden="true"
-                      />
-                    </Popover.Button>
-
-                    <Transition
-                      as={Fragment}
-                      enter="transition ease-out duration-200"
-                      enterFrom="opacity-0 translate-y-1"
-                      enterTo="opacity-100 translate-y-0"
-                      leave="transition ease-in duration-150"
-                      leaveFrom="opacity-100 translate-y-0"
-                      leaveTo="opacity-0 translate-y-1"
-                    >
-                      <Popover.Panel className="absolute z-10 -ml-4 mt-3 w-screen max-w-md transform px-2 sm:px-0 lg:left-1/2 lg:ml-0 lg:-translate-x-1/2">
-                        <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
-                          <div className="relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-8">
-                            {solutions.map((item) => (
-                              <a
-                                key={item.name}
-                                href={item.href}
-                                className="-m-3 flex items-start rounded-lg p-3 hover:bg-gray-50"
-                              >
-                                <item.icon className="h-6 w-6 flex-shrink-0 text-purple-600" aria-hidden="true" />
-                                <div className="ml-4">
-                                  <p className="text-base font-medium text-gray-900">{item.name}</p>
-                                  <p className="mt-1 text-sm text-gray-500">{item.description}</p>
-                                </div>
-                              </a>
-                            ))}
-                          </div>
-                          <div className="space-y-6 bg-gray-50 px-5 py-5 sm:flex sm:space-y-0 sm:space-x-10 sm:px-8">
-                            {callsToAction.map((item) => (
-                              <div key={item.name} className="flow-root">
-                                <a
-                                  href={item.href}
-                                  className="-m-3 flex items-center rounded-md p-3 text-base font-medium text-gray-900 hover:bg-gray-100"
-                                >
-                                  <item.icon className="h-6 w-6 flex-shrink-0 text-gray-400" aria-hidden="true" />
-                                  <span className="ml-3">{item.name}</span>
-                                </a>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      </Popover.Panel>
-                    </Transition>
-                  </>
-                )}
-              </Popover>
-
-              <a href="#" className="text-base font-medium text-gray-500 hover:text-gray-900">
-                Pricing
-              </a>
-              <a href="#" className="text-base font-medium text-gray-500 hover:text-gray-900">
-                Docs
-              </a>
-
-              <Popover className="relative">
-                {({ open }) => (
-                  <>
-                    <Popover.Button
-                      className={classNames(
-                        open ? 'text-gray-900' : 'text-gray-500',
-                        'group inline-flex items-center rounded-md bg-white text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2'
-                      )}
-                    >
-                      <span>More</span>
-                      <ChevronDownIcon
-                        className={classNames(
-                          open ? 'text-gray-600' : 'text-gray-400',
-                          'ml-2 h-5 w-5 group-hover:text-gray-500'
-                        )}
-                        aria-hidden="true"
-                      />
-                    </Popover.Button>
-
-                    <Transition
-                      as={Fragment}
-                      enter="transition ease-out duration-200"
-                      enterFrom="opacity-0 translate-y-1"
-                      enterTo="opacity-100 translate-y-0"
-                      leave="transition ease-in duration-150"
-                      leaveFrom="opacity-100 translate-y-0"
-                      leaveTo="opacity-0 translate-y-1"
-                    >
-                      <Popover.Panel className="absolute left-1/2 z-10 mt-3 w-screen max-w-md -translate-x-1/2 transform px-2 sm:px-0">
-                        <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
-                          <div className="relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-8">
-                            {resources.map((item) => (
-                              <a
-                                key={item.id}
-                                href="#"
-                                className="-m-3 flex items-start rounded-lg p-3 hover:bg-gray-50"
-                              >
-                                <item.icon className="h-6 w-6 flex-shrink-0 text-purple-600" aria-hidden="true" />
-                                <div className="ml-4">
-                                  <p className="text-base font-medium text-gray-900">{item.name}</p>
-                                  <p className="mt-1 text-sm text-gray-500">{item.description}</p>
-                                </div>
-                              </a>
-                            ))}
-                          </div>
-                          <div className="bg-gray-50 px-5 py-5 sm:px-8 sm:py-8">
-                            <div>
-                              <h3 className="text-base font-medium text-gray-500">Recent Posts</h3>
-                              <ul role="list" className="mt-4 space-y-4">
-                                {recentPosts.map((post) => (
-                                  <li key={post.id} className="truncate text-base">
-                                    <a href={post.href} className="font-medium text-gray-900 hover:text-gray-700">
-                                      {post.name}
-                                    </a>
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
-                            <div className="mt-5 text-sm">
-                              <a href="#" className="font-medium text-purple-600 hover:text-purple-500">
-                                View all posts
-                                <span aria-hidden="true"> &rarr;</span>
-                              </a>
-                            </div>
-                          </div>
-                        </div>
-                      </Popover.Panel>
-                    </Transition>
-                  </>
-                )}
-              </Popover>
-            </Popover.Group>
+            <div className="m-0 flex flex-1 justify-center px-4 md:px-0">
+              <Search />
+            </div>
             <div className="hidden items-center justify-end space-x-8 md:flex md:flex-1 lg:w-0">
-              <a href="/signin" className="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900">
-                Sign in
-              </a>
-              <a
-                href="/setting"
-                className="inline-flex items-center justify-center whitespace-nowrap rounded-md border border-transparent bg-purple-100 py-2 px-4 text-base font-medium text-purple-600 hover:bg-purple-200"
-              >
-                Sign up
-              </a>
+                {{loginStatus}? 
+                <><div onClick={()=>{
+                  setlightStatus(false)
+                }}
+                 className='w-12 h-12 border-0 bg-green-200' style={{borderRadius:44}}>用户名</div>
+                {lightStatus?<div id='light' className='w-2 h-2 mt-auto mb-0 bg-green-500 border-0 rounded'></div>:
+                <div id='logout'>
+                <Link 
+                  onClick={()=>{
+                    getLayoutStatus()
+                  }}
+                  key='Logout'
+                  href='#'
+                  className="group flex items-center border-l-4 border-transparent py-2 px-3 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                >
+                  <ArrowLeftOnRectangleIcon className="mr-3 h-6 w-6 text-gray-400 group-hover:text-gray-500" aria-hidden="true" />
+                  Logout
+                </Link>
+                </div>}
+                </>
+                 :<><Link href="/user/login" className="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900">
+                  Sign in
+                </Link>
+                <Link
+                  href="/setting"
+                  className="inline-flex items-center justify-center whitespace-nowrap rounded-md border border-transparent bg-purple-100 py-2 px-4 text-base font-medium text-purple-600 hover:bg-purple-200"
+                >
+                  Sign up
+                </Link></>}
             </div>
           </div>
         </div>
@@ -499,76 +367,19 @@ export default function Example() {
             className="absolute inset-x-0 top-0 z-10 origin-top-right transform p-2 transition md:hidden"
           >
             <div className="divide-y-2 divide-gray-50 rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5">
-              <div className="space-y-6 px-5 pt-5 pb-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <img
-                      className="h-8 w-auto"
-                      src="https://tailwindui.com/img/logos/mark.svg?color=purple&shade=600"
-                      alt="Your Company"
-                    />
-                  </div>
-                  <div className="-mr-2">
-                    <Popover.Button className="inline-flex items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-purple-500">
-                      <span className="sr-only">Close menu</span>
-                      <XMarkIcon className="h-6 w-6" aria-hidden="true" />
-                    </Popover.Button>
-                  </div>
-                </div>
-                <div className="mt-6">
-                  <nav className="grid gap-y-8">
-                    {solutions.map((item) => (
-                      <a
-                        key={item.name}
-                        href={item.href}
-                        className="-m-3 flex items-center rounded-md p-3 hover:bg-gray-50"
-                      >
-                        <item.icon className="h-6 w-6 flex-shrink-0 text-purple-600" aria-hidden="true" />
-                        <span className="ml-3 text-base font-medium text-gray-900">{item.name}</span>
-                      </a>
-                    ))}
-                  </nav>
-                </div>
-              </div>
               <div className="space-y-6 py-6 px-5">
-                <div className="grid grid-cols-2 gap-y-4 gap-x-8">
-                  <a href="#" className="text-base font-medium text-gray-900 hover:text-gray-700">
-                    Pricing
-                  </a>
-
-                  <a href="#" className="text-base font-medium text-gray-900 hover:text-gray-700">
-                    Docs
-                  </a>
-
-                  <a href="#" className="text-base font-medium text-gray-900 hover:text-gray-700">
-                    Blog
-                  </a>
-
-                  <a href="#" className="text-base font-medium text-gray-900 hover:text-gray-700">
-                    Contact Sales
-                  </a>
-                  {resources.map((item) => (
-                    <a
-                      key={item.id}
-                      href={item.href}
-                      className="text-base font-medium text-gray-900 hover:text-gray-700"
-                    >
-                      {item.name}
-                    </a>
-                  ))}
-                </div>
                 <div className="space-y-6">
-                  <a
+                  <Link
                     href="#"
                     className="flex w-full items-center justify-center rounded-md border border-transparent bg-purple-600 py-2 px-4 text-base font-medium text-white hover:bg-purple-700"
                   >
                     Sign up
-                  </a>
+                  </Link>
                   <p className="text-center text-base font-medium text-gray-500">
                     Existing customer?{' '}
-                    <a href="#" className="text-purple-600 hover:text-purple-500">
+                    <Link href="#" className="text-purple-600 hover:text-purple-500">
                       Sign in
-                    </a>
+                    </Link>
                   </p>
                 </div>
               </div>
@@ -585,37 +396,19 @@ export default function Example() {
             <p className="mt-5 text-xl text-gray-500 sm:text-center">
               知识库网站简介
             </p>
-            <div className="relative mt-6 flex self-center rounded-lg bg-gray-100 p-0.5 sm:mt-8">
-              <button
-                type="button"
-                className="relative w-1/2 whitespace-nowrap rounded-md border-gray-200 bg-white py-2 text-sm font-medium text-gray-900 shadow-sm focus:z-10 focus:outline-none focus:ring-2 focus:ring-purple-500 sm:w-auto sm:px-8"
-              >
-                Free
-              </button>
-              <button
-                type="button"
-                className="relative ml-0.5 w-1/2 whitespace-nowrap rounded-md border border-transparent py-2 text-sm font-medium text-gray-700 focus:z-10 focus:outline-none focus:ring-2 focus:ring-purple-500 sm:w-auto sm:px-8"
-              >
-                VIP
-              </button>
-            </div>
           </div>
           <div className="mt-12 space-y-4 sm:mt-16 sm:grid sm:grid-cols-2 sm:gap-6 sm:space-y-0 lg:mx-auto lg:max-w-4xl xl:mx-0 xl:max-w-none xl:grid-cols-4">
             {tiers.map((tier) => (
               <div key={tier.name} className="divide-y divide-gray-200 rounded-lg border border-gray-200 shadow-sm">
                 <div className="p-6">
-                  <h2 className="text-lg font-medium leading-6 text-gray-900">{tier.name}</h2>
+                  <h2 className="text-lg font-bold leading-6 text-gray-900">{tier.name}</h2>
                   <p className="mt-4 text-sm text-gray-500">{tier.description}</p>
-                  <p className="mt-8">
-                    <span className="text-4xl font-bold tracking-tight text-gray-900">${tier.priceMonthly}</span>{' '}
-                    <span className="text-base font-medium text-gray-500">/mo</span>
-                  </p>
-                  <a
+                  <Link
                     href={tier.href}
                     className="mt-8 block w-full rounded-md border border-transparent bg-purple-600 py-2 text-center text-sm font-semibold text-white hover:bg-purple-700"
                   >
                     Get started
-                  </a>
+                  </Link>
                 </div>
                 <div className="px-6 pt-6 pb-8">
                   <h3 className="text-sm font-medium text-gray-900">What's included</h3>
@@ -661,7 +454,7 @@ export default function Example() {
         <div className="mx-auto max-w-7xl py-16 px-6 sm:py-20 lg:px-8">
           <div className="lg:space-y-10">
             <h2 className="text-3xl font-bold tracking-tight text-white">
-              The world's most innovative companies use our app
+            Tutorial building collaborators
             </h2>
             <div className="mt-8 flow-root lg:mt-0">
               <div className="-mt-4 -ml-8 flex flex-wrap justify-between lg:-ml-4">
@@ -681,13 +474,6 @@ export default function Example() {
         <div className="lg:grid lg:grid-cols-3 lg:gap-8">
           <div className="space-y-4">
             <h2 className="text-3xl font-bold tracking-tight text-gray-900">Frequently asked questions</h2>
-            <p className="text-lg text-gray-500">
-              Can’t find the answer you’re looking for? Reach out to our{' '}
-              <a href="#" className="font-medium text-purple-600 hover:text-purple-500">
-                customer support
-              </a>{' '}
-              team.
-            </p>
           </div>
           <div className="mt-12 lg:col-span-2 lg:mt-0">
             <dl className="space-y-12">
@@ -706,121 +492,14 @@ export default function Example() {
       <footer className="bg-gray-900">
         <div className="mx-auto max-w-7xl py-12 px-6 lg:py-16 lg:px-8">
           <h2 className="sr-only">Footer</h2>
-          <div className="pb-8 xl:grid xl:grid-cols-5 xl:gap-8">
-            <div className="grid grid-cols-2 gap-8 xl:col-span-4">
-              <div className="md:grid md:grid-cols-2 md:gap-8">
-                <div>
-                  <h3 className="text-base font-medium text-white">Solutions</h3>
-                  <ul role="list" className="mt-4 space-y-4">
-                    {footerNavigation.solutions.map((item) => (
-                      <li key={item.name}>
-                        <a href={item.href} className="text-base text-gray-300 hover:text-white">
-                          {item.name}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <div className="mt-12 md:mt-0">
-                  <h3 className="text-base font-medium text-white">Support</h3>
-                  <ul role="list" className="mt-4 space-y-4">
-                    {footerNavigation.support.map((item) => (
-                      <li key={item.name}>
-                        <a href={item.href} className="text-base text-gray-300 hover:text-white">
-                          {item.name}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-              <div className="md:grid md:grid-cols-2 md:gap-8">
-                <div>
-                  <h3 className="text-base font-medium text-white">Company</h3>
-                  <ul role="list" className="mt-4 space-y-4">
-                    {footerNavigation.company.map((item) => (
-                      <li key={item.name}>
-                        <a href={item.href} className="text-base text-gray-300 hover:text-white">
-                          {item.name}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <div className="mt-12 md:mt-0">
-                  <h3 className="text-base font-medium text-white">Legal</h3>
-                  <ul role="list" className="mt-4 space-y-4">
-                    {footerNavigation.legal.map((item) => (
-                      <li key={item.name}>
-                        <a href={item.href} className="text-base text-gray-300 hover:text-white">
-                          {item.name}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </div>
-            <div className="mt-12 xl:mt-0">
-              <h3 className="text-base font-medium text-white">Language &amp; Currency</h3>
-              <form className="mt-4 space-y-4 sm:max-w-xs">
-                <fieldset className="w-full">
-                  <label htmlFor="language" className="sr-only">
-                    Language
-                  </label>
-                  <div className="relative">
-                    <select
-                      id="language"
-                      name="language"
-                      className="block w-full rounded-md border border-transparent bg-gray-800 bg-none text-base text-white focus:border-white focus:ring-white sm:text-sm"
-                      defaultValue="English"
-                    >
-                      <option>English</option>
-                      <option>French</option>
-                      <option>German</option>
-                      <option>Japanese</option>
-                      <option>Spanish</option>
-                    </select>
-                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2">
-                      <ChevronDownIcon className="h-4 w-4 text-white" aria-hidden="true" />
-                    </div>
-                  </div>
-                </fieldset>
-                <fieldset className="w-full">
-                  <label htmlFor="currency" className="sr-only">
-                    Currency
-                  </label>
-                  <div className="relative mt-1.5">
-                    <select
-                      id="currency"
-                      name="currency"
-                      className="block w-full rounded-md border border-transparent bg-gray-800 bg-none text-base text-white focus:border-white focus:ring-white sm:text-sm"
-                      defaultValue="AUD"
-                    >
-                      <option>ARS</option>
-                      <option>AUD</option>
-                      <option>CAD</option>
-                      <option>CHF</option>
-                      <option>EUR</option>
-                      <option>GBP</option>
-                      <option>JPY</option>
-                      <option>USD</option>
-                    </select>
-                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2">
-                      <ChevronDownIcon className="h-4 w-4 text-white" aria-hidden="true" />
-                    </div>
-                  </div>
-                </fieldset>
-              </form>
-            </div>
-          </div>
-          <div className="space-y-4 border-t border-gray-700 pt-8 lg:flex lg:items-center lg:justify-between lg:space-y-0 xl:mt-0">
+          <div className="space-y-4 border-gray-700 pt-8 lg:flex lg:items-center lg:justify-between lg:space-y-0 xl:mt-0">
             <div className="space-y-2">
               <h3 className="text-base font-medium text-white">Subscribe to our newsletter</h3>
               <p className="text-base text-gray-300">
                 The latest news, articles, and resources, sent to your inbox weekly.
               </p>
             </div>
+            
             <form className="sm:flex sm:max-w-md">
               <label htmlFor="email-address" className="sr-only">
                 Email address
@@ -843,18 +522,19 @@ export default function Example() {
                 </button>
               </div>
             </form>
+            <LanguageSelect />
           </div>
           <div className="mt-8 border-t border-gray-700 pt-8 md:flex md:items-center md:justify-between">
             <div className="flex space-x-6 md:order-2">
               {footerNavigation.social.map((item) => (
-                <a key={item.name} href="#" className="text-gray-400 hover:text-gray-300">
+                <Link key={item.name} href="#" className="text-gray-400 hover:text-gray-300">
                   <span className="sr-only">{item.name}</span>
                   <item.icon className="h-6 w-6" aria-hidden="true" />
-                </a>
+                </Link>
               ))}
             </div>
             <p className="mt-8 text-base text-gray-400 md:order-1 md:mt-0">
-              &copy; 2020 Your Company, Inc. All rights reserved.
+              &copy; 2023 Your Company, Inc. All rights reserved.
             </p>
           </div>
         </div>

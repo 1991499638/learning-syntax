@@ -52,7 +52,7 @@ function userModel (sequelize) {
 
   const options = {
     defaultScope: {
-      attributes: { exclude: ['hash'] }
+      attributes: { exclude: [] }
     },
     scopes: {
       withHash: { attributes: {} }

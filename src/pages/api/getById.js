@@ -1,4 +1,3 @@
-import { getById } from '@/server/api'
 import { apiHandler, usersRepo } from '../../server/api/index'
 
 

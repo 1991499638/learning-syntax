@@ -1,5 +1,5 @@
 import axios from 'axios'
-
+import jwt from 'jsonwebtoken'
 
 
 
@@ -39,6 +39,28 @@ export const getById = async (paramas) => {
     return response.data
   } catch (error) {
     console.log(error)
+    throw error
+  }
+}
+export const rePwd = async (paramas) => {
+  try {
+    console.log('已经调用')
+    const token = localStorage.getItem('token')
+    const headers = {
+      Authorization: `Bearer ${token}`
+    }
+    console.log(paramas.body, 'i dontg know why i fell bad ')
+    const decodedToken = jwt.decode(token)
+    const sendMessage = {
+      phone: decodedToken.sub,
+      password: paramas.body.password,
+      newpassword: paramas.body.newpassword
+    }
+    console.log(sendMessage)
+    const response = await axios.post('http://43.159.199.39:3000/api/changePassword', sendMessage, { headers })
+    return (response)
+  } catch (error) {
+    console.log('errormessage', error)
     throw error
   }
 }

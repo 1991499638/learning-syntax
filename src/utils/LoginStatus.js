@@ -9,9 +9,9 @@ const getLoginStatus = () => {
   }
 }
 
-const getLayoutStatus = () => {
-  localStorage.removeItem('token')
-
+const getLayoutStatus = async () => {
+  console.log('消除token的函数已经诞生')
+  await localStorage.removeItem('token')
 }
 
 export { getLoginStatus, getLayoutStatus }

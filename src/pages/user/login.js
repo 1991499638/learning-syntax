@@ -15,8 +15,6 @@ export default function Login () {
   const [btnDisabled, setBtnDisabled] = useState(false)
   let judgement = judgeCellphone(phone)
 
-
-
   let timer
 
 
@@ -48,10 +46,7 @@ export default function Login () {
       return
     }
     timer = setInterval(() => setSeconds(pre => pre - 1), 1000)
-
-
     sendCode()
-
     setBtnDisabled(true)
 
   }
@@ -94,26 +89,144 @@ export default function Login () {
   return (
     <>
 
-      <div className="flex" style={{ minHeight: "100vh" }}>
+      <div className="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8" >
         <div className="flex flex-1 flex-col justify-center py-12 px-4 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
-          <div className="mx-auto w-full max-w-sm lg:w-96">
-            <div>
+          <div className="mx-auto w-full max-w-md lg:w-112">
+            <div className='flex flex-wrap justify-center'>
               <img
-                className="h-12 w-auto"
+                onClick={()=>{
+                  window.location.href= window.location.origin
+                }}
+                className="mx-auto h-16 w-auto"
                 src="https://gateway.pinata.cloud/ipfs/QmcYCnbTdZzudCDoBX4retu8UNzN8AvbCtLZkoEHMMkop1?_gl=1*7my5vx*rs_ga*OGYxZDI4MjYtNDMxMC00MWUwLTgxODktZDFiYjY4YTJjYjcx*rs_ga_5RMPXG14TE*MTY4NDIwODAyOS4xMC4xLjE2ODQyMDgzNzguNDQuMC4w"
                 alt="Your Company"
               />
-              <h2 className="mt-6 text-3xl font-bold tracking-tight text-gray-900">Welcome to Web3ladder</h2>
-              <p className="mt-2 text-sm text-gray-600">
+              <h2 className=" mt-6 text-3xl font-bold text-gray-900">开始您的web3ladder学习之旅</h2>
+              <p className=" mx-10 mt-2 text-sm text-gray-600">
                 Or{' '}
-                <a href="./register" className="font-medium text-indigo-600 hover:text-indigo-500">
+                <a href="./register" className="font-medium text-purple-600 hover:text-purple-500">
                   register your account
                 </a>
               </p>
             </div>
 
-            <div className="mt-8">
+            <div className="py-8 px-10 shadow">
+              <div className="mt-6">
+                <form action="#" method="POST" className="space-y-6">
+                  <div>
+                    <label htmlFor="Phone" className="block text-sm font-medium text-gray-700">
+                      Telphone number
+                    </label>
+                    <div className="mt-1">
+                      <input
+                        placeholder="请输入电话号码"
+                        id="Phone"
+                        name="Phone"
+                        type="Phone"
+                        autoComplete="Phone"
+                        value={phone}
+                        onChange={(e) => {
+                          setPhone(e.target.value)
+                        }}
+                        required
+                        className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-purple-500 focus:outline-none focus:ring-purple-500 sm:text-sm"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                      Password
+                    </label>
+                    <div className="mt-1">
+                      <input
+                        placeholder="请输入您的密码"
+                        id="password"
+                        name="password"
+                        type="password"
+                        autoComplete="password"
+                        value={password}
+                        onChange={(e) => {
+                          setPassword(e.target.value)
+                        }}
+                        required
+                        className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-purple-500 focus:outline-none focus:ring-purple-500 sm:text-sm"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label htmlFor="verificationcode" className="block text-sm font-medium text-gray-700" >
+                      验证码
+                    </label>
+                    <div className="mt-1 flex" style={{ justifyContent: "space-between" }}>
+                      <input style={{ width: "12vh" }}
+                        id="verificationcode"
+                        name="verificationcode"
+                        type="verificationcode"
+                        // autoComplete="verificationcode"
+                        value={code}
+                        onChange={(e) => {
+                          setCode(e.target.value)
+                        }}
+                        required
+                        className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-purple-500 focus:outline-none focus:ring-purple-500 sm:text-sm"
+                      /><button
+                        disabled={btnDisabled}
+                        onClick={() => getCaptcha()}
+                        type="button"
+                        className="inline-flex items-center rounded border border-gray-300 bg-white px-2.5 py-1.5 text-xs font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+                      >
+                        {!btnDisabled ? '获取验证码' : `${seconds}s后重发`}
+
+                      </button>
+                    </div>
+                  </div>
+
+
+
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center">
+                      <input
+                        id="remember-me"
+                        name="remember-me"
+                        type="checkbox"
+                        className="h-4 w-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
+                      />
+                      <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
+                        Remember me
+                      </label>
+                    </div>
+
+                    <div className="text-sm">
+                      <a href="#" className="font-medium text-purple-600 hover:text-purple-500">
+                        Forgot your password?
+                      </a>
+                    </div>
+                  </div>
+
+                  <div>
+                    <submit
+                      type="submit"
+                      className="flex w-full justify-center rounded-md border border-transparent bg-purple-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+                      onClick={() => onSubmitLogin(phone, password)}
+                    >
+                      Sign in
+                    </submit>
+                  </div>
+                </form>
+              </div>
+
               <div>
+                <div className="relative mt-6">
+                  <div className="absolute inset-0 flex items-center" aria-hidden="true">
+                    <div className="w-full border-t border-gray-300" />
+                  </div>
+                  <div className="relative flex justify-center text-sm">
+                    <span className="bg-white px-2 text-gray-500">Or continue with</span>
+                  </div>
+                </div>
+
                 <div>
                   <p className="text-sm font-medium text-gray-700">Sign in with</p>
 
@@ -164,131 +277,18 @@ export default function Login () {
                   </div>
                 </div>
 
-                <div className="relative mt-6">
-                  <div className="absolute inset-0 flex items-center" aria-hidden="true">
-                    <div className="w-full border-t border-gray-300" />
-                  </div>
-                  <div className="relative flex justify-center text-sm">
-                    <span className="bg-white px-2 text-gray-500">Or continue with</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-6">
-                <form action="#" method="POST" className="space-y-6">
-                  <div>
-                    <label htmlFor="Phone" className="block text-sm font-medium text-gray-700">
-                      Telphone number
-                    </label>
-                    <div className="mt-1">
-                      <input
-                        placeholder="请输入电话号码"
-                        id="Phone"
-                        name="Phone"
-                        type="Phone"
-                        autoComplete="Phone"
-                        value={phone}
-                        onChange={(e) => {
-                          setPhone(e.target.value)
-                        }}
-                        required
-                        className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                      Password
-                    </label>
-                    <div className="mt-1">
-                      <input
-                        placeholder="请输入您的密码"
-                        id="password"
-                        name="password"
-                        type="password"
-                        autoComplete="password"
-                        value={password}
-                        onChange={(e) => {
-                          setPassword(e.target.value)
-                        }}
-                        required
-                        className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label htmlFor="verificationcode" className="block text-sm font-medium text-gray-700" >
-                      验证码
-                    </label>
-                    <div className="mt-1 flex" style={{ justifyContent: "space-between" }}>
-                      <input style={{ width: "12vh" }}
-                        id="verificationcode"
-                        name="verificationcode"
-                        type="verificationcode"
-                        // autoComplete="verificationcode"
-                        value={code}
-                        onChange={(e) => {
-                          setCode(e.target.value)
-                        }}
-                        required
-                        className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                      /><button
-                        disabled={btnDisabled}
-                        onClick={() => getCaptcha()}
-                        type="button"
-                        className="inline-flex items-center rounded border border-gray-300 bg-white px-2.5 py-1.5 text-xs font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                      >
-                        {!btnDisabled ? '获取验证码' : `${seconds}s后重发`}
-
-                      </button>
-                    </div>
-                  </div>
-
-
-
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center">
-                      <input
-                        id="remember-me"
-                        name="remember-me"
-                        type="checkbox"
-                        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                      />
-                      <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
-                        Remember me
-                      </label>
-                    </div>
-
-                    <div className="text-sm">
-                      <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
-                        Forgot your password?
-                      </a>
-                    </div>
-                  </div>
-
-                  <div>
-                    <submit
-                      type="submit"
-                      className="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                      onClick={() => onSubmitLogin(phone, password)}
-                    >
-                      Sign in
-                    </submit>
-                  </div>
-                </form>
+                
               </div>
             </div>
           </div>
         </div>
-        <div className="relative hidden w-0 flex-1 lg:block">
+        {/* <div className="relative hidden w-0 flex-1 lg:block">
           <img
             className="absolute inset-0 h-full w-full object-cover"
             src="https://images.unsplash.com/photo-1505904267569-f02eaeb45a4c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1908&q=80"
             alt=""
           />
-        </div>
+        </div> */}
       </div>
     </>
   )

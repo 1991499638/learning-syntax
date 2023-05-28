@@ -96,13 +96,15 @@ async function update (phone, params) {
 async function updatePassword ({ phone, password, newpassword }) {
   console.log(phone, password, newpassword)
   const user = await db.User.findOne({ where: { phone } })
-  if (user) {
-    console.log('youaregoooood')
+  if (!user) {
+    throw 'User not found'
   }
   if (!bcrypt.compareSync(password, user.hash)) {
     throw 'Current password is incorrect'
   }
   user.hash = bcrypt.hashSync(newpassword, 10)
+  await user.save()
+
 }
 
 //目前没有验证码功能，后续有待开发，这个是更改电话号码功能
@@ -116,4 +118,5 @@ async function updatePhone (phone, newPhone) {
   user.phone = newPhone
   await user.save()
 }
+
 

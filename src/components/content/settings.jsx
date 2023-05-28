@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-html-link-for-pages */
 import { useEffect, useState } from 'react'
 import { getLoginStatus, getLayoutStatus } from '@/utils/LoginStatus'
 import  {getById}  from '../../server/api'
@@ -37,12 +38,6 @@ export default function Settings () {
 
                                 {/* Description list with inline editing */}
                                 <div className="mt-10 divide-y divide-gray-200">
-                                    {/* <div className="space-y-1">
-                                <h3 className="text-lg font-medium leading-6 text-gray-900">Profile</h3>
-                                <p className="max-w-2xl text-sm text-gray-500">
-                                    This information will be displayed publicly so be careful what you share.
-                                </p>
-                            </div> */}
                                     <div className="mt-6">
                                         <dl className="divide-y divide-gray-200">
                                             <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5">
@@ -94,7 +89,7 @@ export default function Settings () {
                                                     <span className="flex-grow"></span>
                                                     <span className="ml-4 flex-shrink-0">
                                                         <a
-                                                            href='/user/rename'
+                                                            href='/user/repwd'
                                                             type="button"
                                                             className="rounded-md bg-white font-medium text-purple-600 hover:text-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
                                                         >
