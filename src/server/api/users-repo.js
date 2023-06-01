@@ -27,6 +27,8 @@ async function authenticate ({ phone, password }) {
   }
 
 
+
+
   //帮你爹创建你爹的token 有效期7天
   const token = jwt.sign({ sub: user.phone }, serverRuntimeConfig.secret, { expiresIn: '7d' })
 
@@ -96,6 +98,7 @@ async function update (phone, params) {
 async function updatePassword ({ phone, password, newpassword }) {
   console.log(phone, password, newpassword)
   const user = await db.User.findOne({ where: { phone } })
+  console.log(user, 'aaaaaaaaaaaaaaaaaaaaaaa')
   if (!user) {
     throw 'User not found'
   }

@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { Fragment, useEffect, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import {
@@ -19,7 +20,7 @@ let navigation = [
 ]
 const secondaryNavigation = [
   { name: 'Help', href: '#', icon: QuestionMarkCircleIcon },
-  { name: 'Logout', href: '#', icon: ArrowLeftOnRectangleIcon },
+  { name: 'Logout', href: '/', icon: ArrowLeftOnRectangleIcon },
 ]
 
 function classNames(...classes) {
@@ -65,7 +66,7 @@ setInterval(()=>{
 //     // console.log(keyScroll)
 //     setFlag(keyScroll)
 //   }
-// })
+// },[])
 
 
 

@@ -39,6 +39,7 @@ const onSubRePwd = async(currentpassword,confirmnewpassword)=>{
         "newpassword":confirmnewpassword
       }
     })
+    console.log(response,'ssssssssssssssssssssssssssssssssssssssssssssssssssssss')
     if(response.status === 200){
       Toast.show({
         content:'修改成功'
