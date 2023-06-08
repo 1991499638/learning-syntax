@@ -10,9 +10,12 @@ import { Navigation } from '@/components/Navigation'
 import { Prose } from '@/components/Prose'
 import { Search } from '@/components/Search'
 import { ThemeSelector } from '@/components/ThemeSelector'
-
+import Directory from './directory'
 import { navigation, solidity } from '@/routes/index';
 
+function classNames(...classes) {
+  return classes.filter(Boolean).join(' ')
+}
 
 function GitHubIcon(props) {
   return (
@@ -22,8 +25,33 @@ function GitHubIcon(props) {
   )
 }
 
-function Header({ navigation }) {
+function NoActive(props) {
+  return (
+    <div className="hidden items-center max-h-12 justify-end space-x-8 md:flex md:flex-1 lg:w-0" {...props}>
+      <a href="/user/login"
+        className="whitespace-nowrap mr-3 text-base font-medium text-gray-500 hover:text-gray-900">
+        Sign in
+      </a>
+      <a
+        href="/user/register"
+        className="inline-flex items-center justify-center whitespace-nowrap rounded-md border border-transparent bg-purple-100 py-2 px-4 text-base font-medium text-purple-600 hover:bg-purple-200"
+      >
+        Sign up
+      </a>
+    </div>
+  )
+}
+
+function cc() {
+  if (typeof localStorage !== 'undefined' && localStorage.getItem('token')) {
+    return localStorage.getItem('token')
+  }
+}
+
+export function Header({ navigation }) {
   let [isScrolled, setIsScrolled] = useState(false)
+  let [loginStatus] = useState(cc())//登录状态
+  let [active, setactive] = useState(<NoActive />)
 
   useEffect(() => {
     function onScroll() {
@@ -36,10 +64,23 @@ function Header({ navigation }) {
     }
   }, [])
 
+  useEffect(() => {
+    if (loginStatus != null) {
+      setactive(
+        <Link href="/setting" className="group mt-3" aria-label="GitHub">
+          <GitHubIcon className="h-6 w-6 fill-slate-400 group-hover:fill-slate-500 dark:group-hover:fill-slate-300" />
+        </Link>
+      )
+    }
+  }, [loginStatus])
+
   return (
     <header
+      // onClick={()=>{
+      //   console.log(loginStatus!= null)
+      // }}
       className={clsx(
-        'sticky top-0 z-50 flex flex-wrap items-center justify-between bg-white px-4 py-5 shadow-md shadow-slate-900/5 transition duration-500 dark:shadow-none sm:px-6 lg:px-8',
+        'sticky top-0 z-40 flex flex-wrap items-center justify-between bg-white px-4 py-5 shadow-md shadow-slate-900/5 transition duration-500 dark:shadow-none sm:px-6 lg:px-8',
         isScrolled
           ? 'dark:bg-slate-900/95 dark:backdrop-blur dark:[@supports(backdrop-filter:blur(0))]:bg-slate-900/75'
           : 'dark:bg-transparent'
@@ -57,11 +98,10 @@ function Header({ navigation }) {
       <div className="-my-5 mr-6 sm:mr-8 md:mr-0">
         <Search />
       </div>
-      <div className="relative flex basis-0 justify-end gap-6 sm:gap-8 md:flex-grow">
-        <ThemeSelector className="relative z-10" />
-        <Link href="https://github.com" className="group" aria-label="GitHub">
-          <GitHubIcon className="h-6 w-6 fill-slate-400 group-hover:fill-slate-500 dark:group-hover:fill-slate-300" />
-        </Link>
+      <div className="relative flex basis-0 align-middle justify-end gap-6 sm:gap-8 md:flex-grow">
+
+        {active}
+        <ThemeSelector className=" relative z-10  my-3" />
       </div>
     </header>
   )
@@ -92,7 +132,7 @@ function useTableOfContents(tableOfContents) {
       let top = window.scrollY
       let current = headings[0].id
       for (let heading of headings) {
-        if (top >= heading.top) {
+        if (top >= heading.top - 100) {
           current = heading.id
         } else {
           break
@@ -132,14 +172,14 @@ export function Layout({ children, title, tableOfContents, pageUrl }) {
     return section.children.findIndex(isActive) > -1
   }
 
-  let nav=(
+  let nav = (
     <Navigation
       navigation={navigation}
-      className="w-64 pr-8 xl:w-72 xl:pr-16"
+      className=" w-64 pr-8 xl:w-72 xl:pr-16"
     />
   )
-  if(pageUrl==='solidity'){
-    nav=(
+  if (pageUrl === 'solidity') {
+    nav = (
       <Navigation
         navigation={solidity}
         className="w-64 pr-8 xl:w-72 xl:pr-16"
@@ -147,22 +187,47 @@ export function Layout({ children, title, tableOfContents, pageUrl }) {
     )
   }
 
+
+  const [hidden, setHidden] = useState(false);
+  const [hiddenmap, setHiddenmap] = useState(true);
+
+  const handleToggle = () => {
+    setHidden(!hidden);
+  };
+  const handleToggleMap = () => {
+    setHiddenmap(!hiddenmap);
+  };
+
+
   return (
     <>
       <Header navigation={navigation} />
       {/*  */}
       {isHomePage && <Hero />}
 
-      <div className="relative mx-auto flex max-w-8xl justify-center sm:px-2 lg:px-8 xl:px-12">
+      <div className="relative mx-auto flex max-w-8xl justify-center sm:px-2 lg:px-8 xl:px-12 2xl:px-0">
+
+        {/* navigation */}
         <div className="hidden lg:relative lg:block lg:flex-none">
-          <div className="absolute inset-y-0 right-0 w-[50vw] bg-slate-50 dark:hidden" />
+          <div className="absolute inset-y-0 right-0 w-[50vw]  dark:hidden" />
           <div className="absolute top-16 bottom-0 right-0 hidden h-12 w-px bg-gradient-to-t from-slate-800 dark:block" />
           <div className="absolute top-28 bottom-0 right-0 hidden w-px bg-slate-800 dark:block" />
-          <div className="sticky top-[4.5rem] -ml-0.5 h-[calc(100vh-4.5rem)] overflow-y-auto overflow-x-hidden py-16 pl-0.5">
+          <div id='bnav' className={classNames(hidden ? 'hidden' : '', "sticky top-[4.5rem] -ml-0.5 h-[calc(100vh-4.5rem)] overflow-y-auto overflow-x-hidden py-16 pl-0.5")}>
             {nav}
           </div>
         </div>
-        <div className="min-w-0 max-w-2xl flex-auto px-4 py-16 lg:max-w-none lg:pr-0 lg:pl-8 xl:px-16">
+
+        <div className="relative min-w-0 max-w-2xl flex-auto px-4 py-16 lg:max-w-none lg:pr-0 lg:pl-8 xl:px-12">
+          <button className={classNames(hidden ? 'right-[2%]' : 'right-0 3xl:right-[25%] 2xl:right-[18%] xl:right-[20%]', 'myicon fixed top-[20%] ')} onClick={handleToggle}>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75" />
+            </svg>
+          </button>
+          <button className={classNames(hidden ? 'right-[2%]' : 'right-0 2xl:right-[18%] xl:right-[20%]', 'myicon fixed top-[25%] ')} onClick={handleToggleMap}>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z" />
+            </svg>
+          </button>
           <article>
             {(title || section) && (
               <header className="mb-9 space-y-1">
@@ -179,6 +244,13 @@ export function Layout({ children, title, tableOfContents, pageUrl }) {
               </header>
             )}
             <Prose>{children}</Prose>
+            <div className='w-full flex justify-end mt-10 px-10 '>
+              <button onClick={() => {
+                console.log(title)
+              }} className='font-display p-2 border-2 border-slate-200 hover:bg-slate-100 rounded-md ' >完成学习
+              </button>
+            </div>
+
           </article>
           <dl className="mt-12 flex border-t border-slate-200 pt-6 dark:border-slate-800">
             {previousPage && (
@@ -213,8 +285,9 @@ export function Layout({ children, title, tableOfContents, pageUrl }) {
             )}
           </dl>
         </div>
-        <div className="hidden xl:sticky xl:top-[4.5rem] xl:-mr-6 xl:block xl:h-[calc(100vh-4.5rem)] xl:flex-none xl:overflow-y-auto xl:py-16 xl:pr-6">
-          <nav aria-labelledby="on-this-page-title" className="w-56">
+        <div className="hidden xl:sticky xl:top-[4.5rem] xl:-mr-6 xl:block xl:h-[calc(100vh-4.5rem)] xl:flex-none xl:overflow-y-auto xl:py-16 ">
+
+          <nav aria-labelledby="on-this-page-title" className={classNames(hidden ? 'hidden' : '', "w-56")}>
             {tableOfContents.length > 0 && (
               <>
                 <h2
@@ -265,6 +338,26 @@ export function Layout({ children, title, tableOfContents, pageUrl }) {
               </>
             )}
           </nav>
+        </div>
+      </div>
+
+      <div className={classNames(hiddenmap ? 'hidden' : '', 'duration-500 z-50 fixed bg-white/30 backdrop-brightness-50 backdrop-blur-sm inset-y-0 w-screen h-screen')}>
+        <div className='overflow-y-auto px-10 border rounded-lg -translate-x-1/2 shadow-lg shadow-purple-200/50 bg-gray-100 absolute top-16 inset-x-1/2 w-5/6 h-5/6'>
+          <div className='pt-10 pb-5 border-b-2 shadow-xl shadow-gray-200/50 border-b-gray-200  backdrop-blur-sm flex justify-between sticky top-0'>
+            <div></div>
+            <h1 className='text-center text-3xl font-display'>
+              <a href="/">Directory</a>
+            </h1>
+            <button onClick={handleToggleMap} className=''>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+
+          <Directory data={navigation} />
+          <Directory data={navigation} />
+
         </div>
       </div>
     </>

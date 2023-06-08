@@ -50,6 +50,16 @@ export function ThemeSelector(props) {
   useEffect(() => {
     if (selectedTheme) {
       document.documentElement.setAttribute('data-theme', selectedTheme.value)
+      const elements = document.getElementsByClassName('myicon');
+      if(document.documentElement.getAttribute('data-theme')==='dark'){
+        for (let i = 0; i < elements.length; i++) {
+          elements[i].classList.add('text-white');
+        }
+      }else{
+        for (let i = 0; i < elements.length; i++) {
+          elements[i].classList.remove('text-white');
+        }
+      }
     } else {
       setSelectedTheme(
         themes.find(

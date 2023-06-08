@@ -12,7 +12,7 @@ import Link from 'next/link'
 import { Search } from '@/components/Search'
 import Settings from '../../components/content/settings'
 import Homes from '../../components/content/Home'
-
+import getLayoutStatus from '@/utils/getLayoutStatus'
 
 let navigation = [
   { name: 'Home', href: '#Home', icon: HomeIcon, current: '#Home' },
@@ -27,46 +27,46 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-function home(){
-  if(typeof window!='undefined' && window.location.href!='undefined' && window.location.origin!="undefined"){
-    window.location.href=window.location.origin
+function home() {
+  if (typeof window != 'undefined' && window.location.href != 'undefined' && window.location.origin != "undefined") {
+    window.location.href = window.location.origin
   }
-  
+
 }
 
 
 export default function Home() {
-  
+
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [flag, setFlag] = useState("#Home")
 
   //top:
-// Home : 64px  Jobs:1156  App:2249   Mess:3342      Team:4435     Setting:5528
+  // Home : 64px  Jobs:1156  App:2249   Mess:3342      Team:4435     Setting:5528
 
-function handleScroll(top){
-  if(top<735){
-    return "#Home"
-  }else if(top>735){
-    return "#Settings"
+  function handleScroll(top) {
+    if (top < 735) {
+      return "#Home"
+    } else if (top > 735) {
+      return "#Settings"
+    }
   }
-}
 
-setInterval(()=>{
-  if(typeof window !='undefined' && window.scrollY != 'undefined'){
-    let keyScroll = handleScroll(window.scrollY)
-    // console.log(keyScroll)
-    setFlag(keyScroll)
-  }
-  
-},100)
+  setInterval(() => {
+    if (typeof window != 'undefined' && window.scrollY != 'undefined') {
+      let keyScroll = handleScroll(window.scrollY)
+      // console.log(keyScroll)
+      setFlag(keyScroll)
+    }
 
-// useEffect(()=>{
-//   if(typeof window !='undefined' && window.scrollY != 'undefined'){
-//     let keyScroll = handleScroll(window.scrollY)
-//     // console.log(keyScroll)
-//     setFlag(keyScroll)
-//   }
-// },[])
+  }, 100)
+
+  // useEffect(()=>{
+  //   if(typeof window !='undefined' && window.scrollY != 'undefined'){
+  //     let keyScroll = handleScroll(window.scrollY)
+  //     // console.log(keyScroll)
+  //     setFlag(keyScroll)
+  //   }
+  // },[])
 
 
 
@@ -126,7 +126,7 @@ setInterval(()=>{
                     </div>
                   </Transition.Child>
                   <div className="flex flex-shrink-0 items-center px-4" >
-                    <img 
+                    <img
                       className="h-8 w-auto"
                       src="https://tailwindui.com/img/logos/mark.svg?color=purple&shade=600"
                       alt="Easywire"
@@ -198,13 +198,13 @@ setInterval(()=>{
             <div className="mt-5 flex-grow">
               <div className="space-y-1">
                 {navigation.map((item) => (
-                  <Link onClick={()=>setFlag(`#${item.name}`)}
-                    
+                  <Link onClick={() => setFlag(`#${item.name}`)}
+
                     key={item.name}
                     href={item.href}
                     className={classNames(
                       // Active(item.current)
-                      item.current===flag
+                      item.current === flag
                         ? 'bg-purple-50 border-purple-600 text-purple-600 '
                         : 'border-transparent text-gray-600 hover:text-gray-900 hover:bg-gray-50 ',
                       'group border-l-4 py-2 px-3 flex items-center text-sm font-medium select-none cursor-pointer'
@@ -212,7 +212,7 @@ setInterval(()=>{
                   >
                     <item.icon
                       className={classNames(
-                        item.current===flag ? 'text-purple-500' : 'text-gray-400 group-hover:text-gray-500',
+                        item.current === flag ? 'text-purple-500' : 'text-gray-400 group-hover:text-gray-500',
                         'mr-3 flex-shrink-0 h-6 w-6'
                       )}
                       aria-hidden="true"
@@ -225,10 +225,11 @@ setInterval(()=>{
             <div className="block w-full flex-shrink-0">
               {/* 下侧边栏 */}
               {secondaryNavigation.map((item) => (
-                <Link 
-                  onClick={()=>{
-                    if(item.name==='Logout'){
-                      console.log('Logout')
+                <Link
+                  onClick={() => {
+                    if (item.name === 'Logout') {
+                      getLayoutStatus()
+
                     }
                   }}
                   key={item.name}
@@ -245,19 +246,19 @@ setInterval(()=>{
 
         {/* Content area */}
         <div className="md:pl-64">
-            <div
+          <div
             id="content"
             className="mx-auto flex max-w-4xl flex-col md:px-8 xl:px-0">
-                <div className="sticky top-0 z-10 flex h-16 flex-shrink-0 border-b border-gray-200 bg-white">
-                    <div className="m-2 flex flex-1 justify-center px-4 md:px-0">
-                      <Search />
-                    </div>
-                </div> 
-              <Homes />
-              <Settings /> 
+            <div className="sticky top-0 z-10 flex h-16 flex-shrink-0 border-b border-gray-200 bg-white">
+              <div className="m-2 flex flex-1 justify-center px-4 md:px-0">
+                <Search />
+              </div>
             </div>
-        </div> 
-        
+            <Homes />
+            <Settings />
+          </div>
+        </div>
+
       </div>
     </>
   )

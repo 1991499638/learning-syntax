@@ -17,6 +17,7 @@ async function updateETHCourseStatus (phone, index) {
     if (!course) {
       throw new Error('Course in not exsist')
     }
+    //深拷贝的问题
     const ETHcourseArray = JSON.parse(JSON.stringify(course.dataValues.ETHcourse))
     if (!Array.isArray(ETHcourseArray)) {
       throw new Error('Invalid ETHcouse value. Expected an array')

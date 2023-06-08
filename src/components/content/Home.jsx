@@ -5,11 +5,10 @@ import Day from '../calendars/day'
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
   }
-  
+
 
 
 export default function Homes(){
-
 return (
   <>
     <main id='Home' className="flex-1">

@@ -1,11 +1,20 @@
+/* eslint-disable @next/next/no-html-link-for-pages */
 import { Fragment, useEffect, useState } from 'react'
-import { Popover, Transition } from '@headlessui/react'
-import {
-  Bars3Icon,
-  CheckIcon as CheckIconOutline,
-} from '@heroicons/react/24/outline'
-import { Search } from '@/components/Search'
 import Link from 'next/link'
+import Directory from '@/components/directory'
+import { navigation,solidity } from '@/routes';
+// import { Logo,Logomark } from '@/components/Logo'
+import { Header } from '@/components/Layout';
+import clsx from 'clsx'
+import cool from '@/images/cool-3.png'
+
+function GitHubIcon(props) {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 16 16" {...props}>
+      <path d="M8 0C3.58 0 0 3.58 0 8C0 11.54 2.29 14.53 5.47 15.59C5.87 15.66 6.02 15.42 6.02 15.21C6.02 15.02 6.01 14.39 6.01 13.72C4 14.09 3.48 13.23 3.32 12.78C3.23 12.55 2.84 11.84 2.5 11.65C2.22 11.5 1.82 11.13 2.49 11.12C3.12 11.11 3.57 11.7 3.72 11.94C4.44 13.15 5.59 12.81 6.05 12.6C6.12 12.08 6.33 11.73 6.56 11.53C4.78 11.33 2.92 10.64 2.92 7.58C2.92 6.71 3.23 5.99 3.74 5.43C3.66 5.23 3.38 4.41 3.82 3.31C3.82 3.31 4.49 3.1 6.02 4.13C6.66 3.95 7.34 3.86 8.02 3.86C8.7 3.86 9.38 3.95 10.02 4.13C11.55 3.09 12.22 3.31 12.22 3.31C12.66 4.41 12.38 5.23 12.3 5.43C12.81 5.99 13.12 6.7 13.12 7.58C13.12 10.65 11.25 11.33 9.47 11.53C9.76 11.78 10.01 12.26 10.01 13.01C10.01 14.08 10 14.94 10 15.21C10 15.42 10.15 15.67 10.55 15.59C13.71 14.53 16 11.53 16 8C16 3.58 12.42 0 8 0Z" />
+    </svg>
+  )
+}
 
 const tiers = [
   {
@@ -43,57 +52,7 @@ const tiers = [
 ]
 
 const footerNavigation = {
-  solutions: [
-    { name: 'Marketing', href: '#' },
-    { name: 'Analytics', href: '#' },
-    { name: 'Commerce', href: '#' },
-    { name: 'Insights', href: '#' },
-  ],
-  support: [
-    { name: 'Pricing', href: '#' },
-    { name: 'Documentation', href: '#' },
-    { name: 'Guides', href: '#' },
-    { name: 'API Status', href: '#' },
-  ],
-  company: [
-    { name: 'About', href: '#' },
-    { name: 'Blog', href: '#' },
-    { name: 'Jobs', href: '#' },
-    { name: 'Press', href: '#' },
-    { name: 'Partners', href: '#' },
-  ],
-  legal: [
-    { name: 'Claim', href: '#' },
-    { name: 'Privacy', href: '#' },
-    { name: 'Terms', href: '#' },
-  ],
   social: [
-    {
-      name: 'Facebook',
-      href: '#',
-      icon: (props) => (
-        <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
-          <path
-            fillRule="evenodd"
-            d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"
-            clipRule="evenodd"
-          />
-        </svg>
-      ),
-    },
-    {
-      name: 'Instagram',
-      href: '#',
-      icon: (props) => (
-        <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
-          <path
-            fillRule="evenodd"
-            d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z"
-            clipRule="evenodd"
-          />
-        </svg>
-      ),
-    },
     {
       name: 'Twitter',
       href: '#',
@@ -116,19 +75,6 @@ const footerNavigation = {
         </svg>
       ),
     },
-    {
-      name: 'Dribbble',
-      href: '#',
-      icon: (props) => (
-        <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
-          <path
-            fillRule="evenodd"
-            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10c5.51 0 10-4.48 10-10S17.51 2 12 2zm6.605 4.61a8.502 8.502 0 011.93 5.314c-.281-.054-3.101-.629-5.943-.271-.065-.141-.12-.293-.184-.445a25.416 25.416 0 00-.564-1.236c3.145-1.28 4.577-3.124 4.761-3.362zM12 3.475c2.17 0 4.154.813 5.662 2.148-.152.216-1.443 1.941-4.48 3.08-1.399-2.57-2.95-4.675-3.189-5A8.687 8.687 0 0112 3.475zm-3.633.803a53.896 53.896 0 013.167 4.935c-3.992 1.063-7.517 1.04-7.896 1.04a8.581 8.581 0 014.729-5.975zM3.453 12.01v-.26c.37.01 4.512.065 8.775-1.215.25.477.477.965.694 1.453-.109.033-.228.065-.336.098-4.404 1.42-6.747 5.303-6.942 5.629a8.522 8.522 0 01-2.19-5.705zM12 20.547a8.482 8.482 0 01-5.239-1.8c.152-.315 1.888-3.656 6.703-5.337.022-.01.033-.01.054-.022a35.318 35.318 0 011.823 6.475 8.4 8.4 0 01-3.341.684zm4.761-1.465c-.086-.52-.542-3.015-1.659-6.084 2.679-.423 5.022.271 5.314.369a8.468 8.468 0 01-3.655 5.715z"
-            clipRule="evenodd"
-          />
-        </svg>
-      ),
-    },
   ],
 }
 
@@ -136,134 +82,81 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
+
 export default function Example() {
 
 
-  let [loginStatus, setloginStatus] = useState(false)
-  useEffect(() => {
-    if (localStorage.getItem('token') != null) {
-      setloginStatus(true)
-    } else {
-      setloginStatus(false)
-    }
-  }, [])
-  
-  const one = (
-    <>
-      <div
-        onClick={() => {
-          if(loginStatus){
-            window.location.pathname='/setting'
-          }
-          console.log(loginStatus)
-        }}
-        className='w-12 h-12 border-0 bg-green-200' style={{ borderRadius: 44 }}>用户名</div>
-      <div id='light' className='w-2 h-2 mt-auto mb-0 bg-green-500 border-0 rounded'></div>
-    </>)
-  const two = (
-    <>
-      <Link href="/user/login" className="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900">
-        Sign in
-      </Link>
-      <Link
-        href="/user/register"
-        className="inline-flex items-center justify-center whitespace-nowrap rounded-md border border-transparent bg-purple-100 py-2 px-4 text-base font-medium text-purple-600 hover:bg-purple-200"
-      >
-        Sign up
-      </Link>
-    </>)
+if(typeof window!=='undefined'&&window.innerHeight){
+  var screenHeight = window.innerHeight;
+  var timer;
+
+  window.addEventListener('scroll', function() {
+    clearTimeout(timer);
+    
+    timer = setTimeout(function() {
+      var scrollDistance = window.pageYOffset;
+      if (scrollDistance < 400) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }else if(scrollDistance >=400&&scrollDistance<780){
+        window.scrollTo({ top: screenHeight, behavior: 'smooth' });
+      }
+    }, 250); // 设置计时器超时时间为250毫秒
+    
+  });
+}
+
 
 
   return (
-    <div className="bg-white min-h-screen flex flex-col">
-      <Popover className="relative bg-white">
-        <div className="mx-auto  px-6">
-          <div className=" px-16 flex items-center justify-around border-b border-gray-200 py-6 md:justify-start md:space-x-10">
-            <div className="flex justify-start lg:w-0 lg:flex-1">
-              <Link href="#">
-                <span className="sr-only">Your Company</span>
-                <img
-                  className="h-8 w-auto sm:h-10"
-                  src="https://tailwindui.com/img/logos/mark.svg?color=purple&shade=600"
-                  alt=""
-                />
-              </Link>
-            </div>
-            <div className="m-0 flex flex-1 justify-center px-4 md:px-0">
-              <Search />
-            </div>
-            <div className="-my-2 -mr-2 md:hidden">
-              <Popover.Button className="inline-flex items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-purple-500">
-                <span className="sr-only">Open menu</span>
-                <Bars3Icon className="h-6 w-6" aria-hidden="true" />
-              </Popover.Button>
-            </div>
-            <div className="hidden items-center justify-end space-x-8 md:flex md:flex-1 lg:w-0">
-              {!loginStatus && (<>{two}</>)}{loginStatus && (<>{one}</>)}
-            </div>
-          </div>
-        </div>
-
-        <Transition
-          as={Fragment}
-          enter="duration-200 ease-out"
-          enterFrom="opacity-0 scale-95"
-          enterTo="opacity-100 scale-100"
-          leave="duration-100 ease-in"
-          leaveFrom="opacity-100 scale-100"
-          leaveTo="opacity-0 scale-95"
-        >
-          <Popover.Panel
-            focus
-            className="absolute inset-x-0 top-0 z-10 origin-top-right transform p-2 transition md:hidden"
-          >
-            <div className="divide-y-2 divide-gray-50 rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5">
-              <div className="space-y-6 py-6 px-5 ">
-                <div className="space-y-6">
-                  <Link
-                    href="#"
-                    className="flex w-full items-center justify-center rounded-md border border-transparent bg-purple-600 py-2 px-4 text-base font-medium text-white hover:bg-purple-700"
-                  >
-                    Sign up
-                  </Link>
-                  <p className="text-center text-base font-medium text-gray-500">
-                    Existing customer?{' '}
-                    <Link href="#" className="text-purple-600 hover:text-purple-500">
-                      Sign in
-                    </Link>
-                  </p>
-                </div>
-              </div>
-            </div>
-          </Popover.Panel>
-        </Transition>
-      </Popover>
-
+    <div className=" min-h-screen flex flex-col">
+      <Header  />
       {/* Pricing with four tiers and toggle */}
-      <div className="bg-gradient-to-b from-white to-white">
-        <div className="mx-auto max-w-7xl px-6  py-16 lg:px-8">
-          <div className="sm:align-center sm:flex sm:flex-col">
-            <h1 className="text-5xl font-bold tracking-tight text-gray-900 sm:text-center">Web3 Learning</h1>
-            {/* <p className="mt-5 text-xl text-gray-500 sm:text-center">
-              知识库网站简介
-            </p> */}
+      <div className="">
+        <div className="mx-auto pb-16 ">
+          <div 
+          id='bg-index'
+          className="relative h-screen my-auto overflow-hidden w-screen " 
+          style={{
+            maxWidth: "-webkit-fill-available", 
+            backgroundImage: `url(${cool})`,
+            backgroundPosition: 'center calc(50% - 100px)'
+            }}>
+            <div className="select-none absolute top-1/3 w-full h-20 font-display text-5xl font-bold tracking-tight text-orange-500 sm:text-center">Web3 Learning</div>
+            <div className='absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 flex justify-center mx-auto'>
+              <button  
+              onClick={()=>{
+                window.scrollTo({ top: window.innerHeight, behavior: 'smooth' });
+              }}
+              className='mx-2 font-bold border-0 rounded-lg px-10 h-12 mt-10 duration-200 text-white text-lg bg-blue-700 hover:bg-blue-700 hover:px-14 '>
+                Get started
+              </button>
+              <a href="" 
+              className='mx-2 font-bold pt-2 border-2  rounded-lg px-10 h-12 mt-10 duration-200 text-white text-lg bg-inherit  hover:backdrop-blur hover:px-14 '>
+                Learn more
+              </a>
+              
+            </div>
           </div>
-          <div className="mt-12 space-y-4 sm:mt-16 sm:grid sm:grid-cols-2 sm:gap-6 sm:space-y-0 lg:mx-auto lg:max-w-4xl xl:mx-0 xl:max-w-none xl:grid-cols-3">
-            {tiers.map((tier) => (
-              <div key={tier.name} className="divide-y divide-gray-200 rounded-lg border border-gray-200 shadow-sm">
-                <div className="p-6">
-                  <h2 className="text-lg font-bold leading-6 text-gray-900">{tier.name}</h2>
-                  <p className="mt-4 text-sm text-gray-500">{tier.description}</p>
-                  <Link
-                    href={tier.href}
-                    className="mt-8 block w-full rounded-md border border-transparent bg-purple-600 py-2 text-center text-sm font-semibold text-white hover:bg-purple-700"
-                  >
-                    Get started
-                  </Link>
-                </div>
-              </div>
-            ))}
+          <div id='directory' className='h-2'></div>
+          <div  className='w-5/6 mx-auto'>
+            {/* <hr className='mb-5' /> */}
+            <div className='myicon my-10'>
+              <h1 className=' text-left px-10 indent-10 text-2xl font-bold font-display'>BTC</h1>
+              <p className='px-10 font-medium text-sm my-5 indent-10'>BTC是一种去中心化的数字货币，发行和交易都是基于区块链技术。BTC的应用场景包括支付、投资、交易等。</p>
+              <Directory data={navigation} />
+            </div>
+            <div className='myicon pt-6'>
+              <h1 className='text-left px-10 indent-10 text-2xl font-bold font-display'>ETH</h1>
+              <p className='px-10 font-medium text-sm my-5 indent-10'>ETH是一种基于区块链技术的智能合约平台，可以被用于开发去中心化应用。ETH的应用场景包括去中心化金融、数字身份、供应链管理等。</p>
+              <Directory data={navigation} />
+            </div>
+            <div className='myicon pt-6'>
+              <h1 className='mt-5 text-left px-10 indent-10 text-2xl font-bold font-display'>Solidity</h1>
+              <p className='px-10 font-medium text-sm my-5 indent-10'>Solidity是一种面向合约的编程语言，被用于开发基于以太坊的智能合约。Solidity支持面向对象编程和函数式编程，语法和结构类似于JavaScript。</p>
+              <Directory data={solidity} />
+            </div>
           </div>
+          
         </div>
       </div>
 
