@@ -11,7 +11,7 @@ function Directory({data}) {
         <ul className="my-2 flex flex-wrap">
           {section.links.map((link, linkIndex) => (
             <li key={linkIndex} className="xl:w-1/3 sm:w-full lg:w-1/2 md:indent-16 my-1 font-mono">
-                <p>{index+1}.{linkIndex+1}: <a className='text-blue-500 hover:text-red-500 ' href={link.href}>{link.title}</a></p>
+                <p>{index+1}.{linkIndex+1}: <a className='text-purple-500 hover:text-red-500 ' href={link.href}>{link.title}</a></p>
             </li>
           ))}
         </ul>

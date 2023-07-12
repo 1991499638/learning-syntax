@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import clsx from 'clsx'
 
 import { Hero } from '@/components/Hero'
-import { Logo, Logomark,Mylogo } from '@/components/Logo'
+import { Logo, Logomark, Mylogo } from '@/components/Logo'
 import { MobileNavigation } from '@/components/MobileNavigation'
 import { Navigation } from '@/components/Navigation'
 import { Prose } from '@/components/Prose'
@@ -15,8 +15,8 @@ import { navigation, solidity } from '@/routes/index';
 
 const themes = [
   { name: 'Light', value: 'light' },
-  { name: 'Dark', value: 'dark'},
-  { name: 'System', value: 'system'},
+  { name: 'Dark', value: 'dark' },
+  { name: 'System', value: 'system' },
 ]
 
 function classNames(...classes) {
@@ -59,7 +59,7 @@ export function Header({ navigation }) {
   let [isScrolled, setIsScrolled] = useState(false)
   let [loginStatus] = useState(cc())//登录状态
   let [active, setactive] = useState(<NoActive />)
-  let [theme,settheme]=useState()
+  let [theme, settheme] = useState()
 
   useEffect(() => {
     function onScroll() {
@@ -97,7 +97,7 @@ export function Header({ navigation }) {
       <div className="relative flex flex-grow basis-0 items-center">
         <Link href="/" aria-label="Home page">
           {/* <Logomark className="h-9 w-9 lg:hidden" /> */}
-          <img className='h-9 myicon' src={(theme??'light')==='dark'?"/logon.png":"/logol.png"} alt="" />
+          <img className='h-9 myicon' src={(theme ?? 'light') === 'dark' ? "/logon.png" : "/logol.png"} alt="" />
           {/* <Mylogo className='h-9 w-auto myicon' /> */}
           {/* <Logo className="hidden h-9 w-auto fill-slate-700 dark:fill-sky-100 lg:block" /> */}
         </Link>
@@ -234,7 +234,7 @@ export function Layout({ children, title, tableOfContents, pageUrl }) {
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z" />
             </svg>
           </button>
-          <article>
+          <article style={{ marginTop: "-36px" }}>
             {(title || section) && (
               <header className="mb-9 space-y-1">
                 {section && (
