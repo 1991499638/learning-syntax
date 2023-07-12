@@ -20,9 +20,9 @@ return (
           <div className="px-4 sm:px-6 md:px-0">
             <div className='py-6 flex justify-end flex-col flex-wrap'>
               {/* <h1 className='text-2xl indent-20'><b>学习进度:</b></h1> */}
-              <Progress col="purple" wid='100%' name="区块链" />
-              <Progress col="teal" wid='53%' name="BTC" />
-              <Progress col="green" wid='10%' name="solidity" />
+              <Progress className='bg-purple-500 h-full rounded-full' wid='100%' name="区块链" />
+              <Progress className='bg-teal-500 h-full rounded-full' wid='53%' name="BTC" />
+              <Progress className='bg-sky-500 h-full rounded-full' wid='10%' name="solidity" />
               <Day />
             </div>
           </div>

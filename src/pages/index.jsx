@@ -64,7 +64,7 @@ const footerNavigation = {
     },
     {
       name: 'GitHub',
-      href: '#',
+      href: 'https://github.com/lilywest2022/learning-syntax',
       icon: (props) => (
         <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
           <path
@@ -121,17 +121,19 @@ if(typeof window!=='undefined'&&window.innerHeight){
             backgroundImage: `url(${cool})`,
             backgroundPosition: 'center calc(50% - 100px)'
             }}>
-            <div className="select-none absolute top-1/3 w-full h-20 font-display text-5xl font-bold tracking-tight text-orange-500 sm:text-center">Web3 Learning</div>
+            <div id='index_title' className="text-center select-none absolute top-1/3 w-full h-20 font-display text-5xl font-bold tracking-tight text-orange-500 sm:text-center">
+              Web3 Learning
+            </div>
             <div className='absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 flex justify-center mx-auto'>
               <button  
               onClick={()=>{
                 window.scrollTo({ top: window.innerHeight, behavior: 'smooth' });
               }}
-              className='mx-2 font-bold border-0 rounded-lg px-10 h-12 mt-10 duration-200 text-white text-lg bg-blue-700 hover:bg-blue-700 hover:px-14 '>
+              className='mx-2 md:font-bold border-0 rounded-lg px-10 h-12 mt-10 duration-200 text-white md:text-lg bg-blue-700 hover:bg-blue-700 hover:px-14 '>
                 Get started
               </button>
               <a href="" 
-              className='mx-2 font-bold pt-2 border-2  rounded-lg px-10 h-12 mt-10 duration-200 text-white text-lg bg-inherit  hover:backdrop-blur hover:px-14 '>
+              className='mx-2 md:font-bold md:pt-2 border-2  rounded-lg px-10 h-12 mt-10 duration-200 text-white md:text-lg bg-inherit  hover:backdrop-blur hover:px-14 '>
                 Learn more
               </a>
               
@@ -141,18 +143,18 @@ if(typeof window!=='undefined'&&window.innerHeight){
           <div  className='w-5/6 mx-auto'>
             {/* <hr className='mb-5' /> */}
             <div className='myicon my-10'>
-              <h1 className=' text-left px-10 indent-10 text-2xl font-bold font-display'>BTC</h1>
-              <p className='px-10 font-medium text-sm my-5 indent-10'>BTC是一种去中心化的数字货币，发行和交易都是基于区块链技术。BTC的应用场景包括支付、投资、交易等。</p>
+              <h1 className=' text-left md:px-10 md:indent-10 text-2xl font-bold font-display'>BTC</h1>
+              <p className='md:px-10 font-medium text-sm my-5 indent-10'>BTC是一种去中心化的数字货币，发行和交易都是基于区块链技术。BTC的应用场景包括支付、投资、交易等。</p>
               <Directory data={navigation} />
             </div>
             <div className='myicon pt-6'>
-              <h1 className='text-left px-10 indent-10 text-2xl font-bold font-display'>ETH</h1>
-              <p className='px-10 font-medium text-sm my-5 indent-10'>ETH是一种基于区块链技术的智能合约平台，可以被用于开发去中心化应用。ETH的应用场景包括去中心化金融、数字身份、供应链管理等。</p>
+              <h1 className='text-left md:px-10 md:indent-10 text-2xl font-bold font-display'>ETH</h1>
+              <p className='md:px-10 font-medium text-sm my-5 indent-10'>ETH是一种基于区块链技术的智能合约平台，可以被用于开发去中心化应用。ETH的应用场景包括去中心化金融、数字身份、供应链管理等。</p>
               <Directory data={navigation} />
             </div>
             <div className='myicon pt-6'>
-              <h1 className='mt-5 text-left px-10 indent-10 text-2xl font-bold font-display'>Solidity</h1>
-              <p className='px-10 font-medium text-sm my-5 indent-10'>Solidity是一种面向合约的编程语言，被用于开发基于以太坊的智能合约。Solidity支持面向对象编程和函数式编程，语法和结构类似于JavaScript。</p>
+              <h1 className='mt-5 text-left md:px-10 md:indent-10 text-2xl font-bold font-display'>Solidity</h1>
+              <p className='md:px-10 font-medium text-sm my-5 indent-10'>Solidity是一种面向合约的编程语言，被用于开发基于以太坊的智能合约。Solidity支持面向对象编程和函数式编程，语法和结构类似于JavaScript。</p>
               <Directory data={solidity} />
             </div>
           </div>

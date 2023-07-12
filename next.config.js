@@ -13,7 +13,7 @@ const nextConfig = {
     disableStaticImages: true,
   },
   experimental: {
-    // scrollRestoration: true,
+    scrollRestoration: true,
   },
   serverRuntimeConfig: {
     dbConfig: {
@@ -27,5 +27,3 @@ const nextConfig = {
   },
 }
 module.exports = withTM(withImages(withMarkdoc()(nextConfig)))
-// module.exports = withMarkdoc()(nextConfig)
-// 

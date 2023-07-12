@@ -28,18 +28,20 @@ const weekDay=new Date().getDay()
 
 function calend(add){
 
-  
   let calendars=[];
   calendars.length = 42;
-  let addYear=(add+month)/12;
+  let addYear=Math.floor((add+month)/12);
+
   let yearNumber=year+addYear
-  const firstDay=new Date(yearNumber,month+add,1).getDay(); //计算本月第一天是星期几
-  let monthNumber=month+add; //手动选择的月份，默认本月，整数类型，数据没限制
+  let monthNumber=(month+add)%12>=0?(month+add)%12:-(-12-(month+add)%12); //手动选择的月份，默认本月，整数类型，数据没限制
+
+  const firstDay=new Date(yearNumber,monthNumber,1).getDay(); //计算本月第一天是星期几
   let lastDay
   let lastMouth; //判断是否存在上个月的日期，也就是判断本月1号是不是星期一
   let nowDay=1; //本月开始日期，计数
   let torDay=1; //下个月开始日期，计数
   let lastMouthNumber=monthNumber-1; //上个月的月份 
+
   if(firstDay!=1){
 
     //如果上个月是去年
@@ -54,7 +56,7 @@ function calend(add){
   }
   
   //日历最后一个日期
-  let finalyDay = 42-firstDay+1-monthDays[monthNumber]
+  let finalyDay = 42-firstDay+1-(yearNumber%4==0 && monthNumber==1? 29:monthDays[monthNumber])
   // let count=1;
   let date
   let isCurrentMonth
@@ -72,13 +74,10 @@ function calend(add){
         lastMouth=0;
       }
     }else{
-      if(nowDay<=monthDays[monthNumber]){
+      if(nowDay<=(yearNumber%4==0 && monthNumber==1? 29:monthDays[monthNumber])){
         date = `${yearNumber}-${monthNumber+1}-${nowDay}`;
         isCurrentMonth = true;
-        isToday=false;
-        if(nowDay===day){
-          isToday=true;
-        }
+        isToday=(nowDay===day&&add==0);
         nowDay++
       }else{
         if(torDay<=finalyDay){
@@ -113,11 +112,11 @@ export default function Day() {
       <header className="flex flex-none items-center justify-between border-y border-gray-200 py-4 px-6">
         <div>
           <h1 className="text-lg font-semibold leading-6 text-gray-900">
-            <time dateTime="2022-01-22" className="sm:hidden">
+            {/* <time dateTime="2022-01-22" className="sm:hidden">
             {months[month+add]} {day}, {year}
-            </time>
+            </time> */}
             <time dateTime="2022-01-22" className="hidden sm:inline">
-            {months[month+add]} {day}, {year}
+            {months[month]} {day}, {year}
             </time>
           </h1>
           <p className="mt-1 text-sm text-gray-500">{daysOfWeek[weekDay-1]}</p>
@@ -146,7 +145,7 @@ export default function Day() {
                 isSelected: ${monthDays.isSelected}`);
               });
             }}
-            className="flex-auto font-semibold">{months[month+add]} {year}</div>
+            className="flex-auto font-semibold">{months[(month+add)%12>=0?(month+add)%12:-(-12-(month+add)%12)]} {year+Math.floor((add+month)/12)}</div>
             <button
               onClick={()=>{
                 setadd(add+1);
@@ -179,7 +178,7 @@ export default function Day() {
                   day.isSelected && 'text-white',
                   !day.isSelected && day.isCurrentMonth && !day.isToday && 'text-gray-900',
                   !day.isSelected && !day.isCurrentMonth && !day.isToday && 'text-gray-400',
-                  day.isToday && !day.isSelected && 'text-indigo-600',
+                  day.isToday && !day.isSelected && 'text-purple-500',
                   dayIdx === 0 && 'rounded-tl-lg',
                   dayIdx === 6 && 'rounded-tr-lg',
                   dayIdx === calendars.length - 7 && 'rounded-bl-lg',
@@ -190,7 +189,7 @@ export default function Day() {
                   dateTime={day.date}
                   className={classNames(
                     'mx-auto flex h-7 w-7 items-center justify-center rounded-full',
-                    day.isSelected && day.isToday && 'bg-indigo-600',
+                    day.isSelected && day.isToday && 'text-purple-500',
                     day.isSelected && !day.isToday && 'bg-gray-900'
                   )}
                 >

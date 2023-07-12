@@ -30,7 +30,6 @@ async function updateETHCourseStatus (phone, index) {
     await course.save()
     console.log(course, '修改后nnnnnnnnnnnnnnn')
 
-
     console.log(`Updated ETHcourse status for user ${phone} at index ${index}`)
   } catch (error) {
     console.error(`Error updating ETHcourse status :${error}`)

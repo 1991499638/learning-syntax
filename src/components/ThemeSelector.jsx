@@ -51,7 +51,7 @@ export function ThemeSelector(props) {
     if (selectedTheme) {
       document.documentElement.setAttribute('data-theme', selectedTheme.value)
       const elements = document.getElementsByClassName('myicon');
-      if(document.documentElement.getAttribute('data-theme')==='dark'){
+      if(document.documentElement.getAttribute('data-theme')==='dark' || window.localStorage.theme==='dark'){
         for (let i = 0; i < elements.length; i++) {
           elements[i].classList.add('text-white');
         }

@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import clsx from 'clsx'
 
 import { Hero } from '@/components/Hero'
-import { Logo, Logomark } from '@/components/Logo'
+import { Logo, Logomark,Mylogo } from '@/components/Logo'
 import { MobileNavigation } from '@/components/MobileNavigation'
 import { Navigation } from '@/components/Navigation'
 import { Prose } from '@/components/Prose'
@@ -12,6 +12,12 @@ import { Search } from '@/components/Search'
 import { ThemeSelector } from '@/components/ThemeSelector'
 import Directory from './directory'
 import { navigation, solidity } from '@/routes/index';
+
+const themes = [
+  { name: 'Light', value: 'light' },
+  { name: 'Dark', value: 'dark'},
+  { name: 'System', value: 'system'},
+]
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -48,10 +54,12 @@ function cc() {
   }
 }
 
+
 export function Header({ navigation }) {
   let [isScrolled, setIsScrolled] = useState(false)
   let [loginStatus] = useState(cc())//登录状态
   let [active, setactive] = useState(<NoActive />)
+  let [theme,settheme]=useState()
 
   useEffect(() => {
     function onScroll() {
@@ -76,9 +84,6 @@ export function Header({ navigation }) {
 
   return (
     <header
-      // onClick={()=>{
-      //   console.log(loginStatus!= null)
-      // }}
       className={clsx(
         'sticky top-0 z-40 flex flex-wrap items-center justify-between bg-white px-4 py-5 shadow-md shadow-slate-900/5 transition duration-500 dark:shadow-none sm:px-6 lg:px-8',
         isScrolled
@@ -91,17 +96,18 @@ export function Header({ navigation }) {
       </div>
       <div className="relative flex flex-grow basis-0 items-center">
         <Link href="/" aria-label="Home page">
-          <Logomark className="h-9 w-9 lg:hidden" />
-          <Logo className="hidden h-9 w-auto fill-slate-700 dark:fill-sky-100 lg:block" />
+          {/* <Logomark className="h-9 w-9 lg:hidden" /> */}
+          <img className='h-9 myicon' src={(theme??'light')==='dark'?"/logon.png":"/logol.png"} alt="" />
+          {/* <Mylogo className='h-9 w-auto myicon' /> */}
+          {/* <Logo className="hidden h-9 w-auto fill-slate-700 dark:fill-sky-100 lg:block" /> */}
         </Link>
       </div>
       <div className="-my-5 mr-6 sm:mr-8 md:mr-0">
         <Search />
       </div>
       <div className="relative flex basis-0 align-middle justify-end gap-6 sm:gap-8 md:flex-grow">
-
         {active}
-        <ThemeSelector className=" relative z-10  my-3" />
+        <ThemeSelector id='themes' className=" relative z-10 mr-8 my-3" />
       </div>
     </header>
   )
@@ -217,13 +223,13 @@ export function Layout({ children, title, tableOfContents, pageUrl }) {
           </div>
         </div>
 
-        <div className="relative min-w-0 max-w-2xl flex-auto px-4 py-16 lg:max-w-none lg:pr-0 lg:pl-8 xl:px-12">
-          <button className={classNames(hidden ? 'right-[2%]' : 'right-0 3xl:right-[25%] 2xl:right-[18%] xl:right-[20%]', 'myicon fixed top-[20%] ')} onClick={handleToggle}>
+        <div className="relative min-w-0 max-w-2xl flex-auto px-4 pb-16 lg:max-w-none lg:pr-0 lg:pl-8 xl:px-12">
+          <button className={classNames(hidden ? '' : '', 'myicon sticky top-28 mb-2 -ml-10 flex')} onClick={handleToggle}>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
               <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75" />
             </svg>
           </button>
-          <button className={classNames(hidden ? 'right-[2%]' : 'right-0 2xl:right-[18%] xl:right-[20%]', 'myicon fixed top-[25%] ')} onClick={handleToggleMap}>
+          <button className={classNames(hidden ? '' : '', 'myicon sticky top-36 -ml-10 flex')} onClick={handleToggleMap}>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z" />
             </svg>
@@ -247,7 +253,7 @@ export function Layout({ children, title, tableOfContents, pageUrl }) {
             <div className='w-full flex justify-end mt-10 px-10 '>
               <button onClick={() => {
                 console.log(title)
-              }} className='font-display p-2 border-2 border-slate-200 hover:bg-slate-100 rounded-md ' >完成学习
+              }} className='myicon font-display p-2 border-2 border-slate-200 hover:bg-slate-100 rounded-md ' >完成学习
               </button>
             </div>
 

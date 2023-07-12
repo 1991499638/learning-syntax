@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 
+//  const proColor=['red','purple','teal','green',]
+
 export default function Progress(props){
 
   let [width,setwidth] = useState(props.wid)
@@ -36,11 +38,11 @@ export default function Progress(props){
       <div
       onClick={()=>{
         add()
+        console.log(props)
       }}
       className="w-1/2 relative my-4 h-4 bg-gray-200 rounded-full">
         <div
-          className={`h-full rounded-full bg-${props.col}-500`}
-          // className={`h-full rounded-full bg-purple-500`}
+        {...props}
           style={{ width: `${width}` }}
           role="progressbar"
           aria-label="Example 20px high"
