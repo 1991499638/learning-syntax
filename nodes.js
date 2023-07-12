@@ -1,8 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 
-const folderPath = './docs'; // 指定文件夹路径
-const outPath = '../routes';
+const folderPath = './src/pages/docs'; // 指定文件夹路径
+const outPath = './src/routes';
 
 const navigation = []; // 存储导航数据的数组
 
