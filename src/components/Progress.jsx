@@ -33,7 +33,7 @@ export default function Progress(props){
     <> 
     <div className="flex justify-center">
       <div className="my-3 lg:w-1/6 md:w-1/3  h-6 flex md:align-middle">
-        <span className="md:indent-8 select-none"><b><i>{props.name} :</i></b></span>
+        <span className="myicon md:indent-8 select-none"><b><i>{props.name} :</i></b></span>
       </div>
       <div
       onClick={()=>{

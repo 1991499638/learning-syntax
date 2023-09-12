@@ -13,6 +13,7 @@ import { Search } from '@/components/Search'
 import Settings from '../../components/content/settings'
 import Homes from '../../components/content/Home'
 import getLayoutStatus from '@/utils/getLayoutStatus'
+import { Header } from '@/components/Layout'
 
 let navigation = [
   { name: 'Home', href: '#Home', icon: HomeIcon, current: '#Home' },
@@ -185,21 +186,21 @@ export default function Home() {
         </Transition.Root>
 
         {/* Static sidebar for desktop */}
-        <div className="hidden md:fixed md:inset-y-0 md:flex md:w-64 md:flex-col">
+        <Header />
+        <div style={{ marginTop: 88 }} className="hidden md:fixed md:inset-y-0 md:flex md:w-64 md:flex-col">
           {/* Sidebar component, swap this element with another sidebar if you like */}
-          <nav className="flex flex-grow flex-col overflow-y-auto border-r border-gray-200 bg-gray-50 pt-5 pb-4">
-            <div className="flex flex-shrink-0 items-center px-4">
+          <nav className="flex  flex-grow flex-col overflow-y-auto border-r  pt-0 pb-4">
+            {/* <div className="flex flex-shrink-0 items-center px-4">
               <img onClick={home}
                 className="h-8 w-auto"
                 src="https://tailwindui.com/img/logos/mark.svg?color=purple&shade=600"
                 alt="Easywire"
               />
-            </div>
+            </div> */}
             <div className="mt-5 flex-grow">
               <div className="space-y-1">
                 {navigation.map((item) => (
                   <Link onClick={() => setFlag(`#${item.name}`)}
-
                     key={item.name}
                     href={item.href}
                     className={classNames(
@@ -245,15 +246,16 @@ export default function Home() {
         </div>
 
         {/* Content area */}
-        <div className="md:pl-64">
+        <div className="md:pl-64 ">
           <div
             id="content"
-            className="mx-auto flex max-w-4xl flex-col md:px-8 xl:px-0">
-            <div className="sticky top-0 z-10 flex h-16 flex-shrink-0 border-b border-gray-200 bg-white">
+            className="mx-auto flex max-w-4xl flex-col md:px-8 xl:px-0 ">
+            {/* <div className="sticky top-0 z-10 flex h-16 flex-shrink-0 border-b border-gray-200 ">
               <div className="m-2 flex flex-1 justify-center px-4 md:px-0">
                 <Search />
               </div>
-            </div>
+            </div> */}
+            
             <Homes />
             <Settings />
           </div>

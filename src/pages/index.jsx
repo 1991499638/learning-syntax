@@ -16,41 +16,6 @@ function GitHubIcon(props) {
   )
 }
 
-const tiers = [
-  {
-    name: 'BTC',
-    href: '/docs',
-    description: 'BTC是一种去中心化的数字货币，发行和交易都是基于区块链技术。BTC的应用场景包括支付、投资、交易等。',
-    features: [
-      '可以用于支付、投资、交易等场景。',
-      '交易记录不包含个人身份信息，保护用户隐私。',
-      'BTC的总量是有限的，目前为2100万枚。',
-    ],
-  },
-  {
-    name: 'ETH',
-    href: '/docs',
-    description: 'ETH是一种基于区块链技术的智能合约平台，可以被用于开发去中心化应用。ETH的应用场景包括去中心化金融、数字身份、供应链管理等。',
-    features: [
-      '支持智能合约的开发和执行。',
-      '可以被用于开发去中心化应用（DApps）。',
-      '可以应用于去中心化金融、数字身份、供应链管理等领域。',
-      '受到了广泛关注和支持，开发工具和社区生态丰富。',
-    ],
-  },
-  {
-    name: 'Solidity',
-    href: '/docs?pu=solidity',
-    description: 'Solidity是一种面向合约的编程语言，被用于开发基于以太坊的智能合约。Solidity支持面向对象编程和函数式编程，语法和结构类似于JavaScript。',
-    features: [
-      '专门用于开发智能合约的编程语言。 ',
-      '支持面向对象编程，可以提高代码的复用性和可维护性。',
-      '支持函数式编程，可以提高代码的可读性和可测试性。',
-      '开发工具包括Remix、Truffle等，可以提高开发效率和代码质量。',
-    ],
-  },
-]
-
 const footerNavigation = {
   social: [
     {

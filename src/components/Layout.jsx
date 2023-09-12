@@ -54,6 +54,19 @@ function cc() {
   }
 }
 
+// export function HeaderRight() {
+
+//   return (
+//     <>
+//       <div className="-my-5 mr-6 sm:mr-8 md:mr-0">
+//         <Search />
+//       </div>
+//       <div className="relative flex basis-0 align-middle justify-end gap-6 sm:gap-8 md:flex-grow">
+//         <ThemeSelector id='themes' className=" relative z-10 mr-8 my-3" />
+//       </div>
+//     </>
+//   )
+// }
 
 export function Header({ navigation }) {
   let [isScrolled, setIsScrolled] = useState(false)
@@ -104,10 +117,7 @@ export function Header({ navigation }) {
       </div>
       <div className="relative flex flex-grow basis-0 items-center">
         <Link href="/" aria-label="Home page">
-          {/* <Logomark className="h-9 w-9 lg:hidden" /> */}
           <img className='h-9 myicon' id='logo' src='' alt="" />
-          {/* <Mylogo className='h-9 w-auto myicon' /> */}
-          {/* <Logo className="hidden h-9 w-auto fill-slate-700 dark:fill-purple-100 lg:block" /> */}
         </Link>
       </div>
       <div className="-my-5 mr-6 sm:mr-8 md:mr-0">
