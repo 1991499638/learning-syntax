@@ -59,7 +59,7 @@ export function Header({ navigation }) {
   let [isScrolled, setIsScrolled] = useState(false)
   let [loginStatus] = useState(cc())//登录状态
   let [active, setactive] = useState(<NoActive />)
-  let [theme, settheme] = useState()
+  let [theme, settheme] = useState('light')
 
   useEffect(() => {
     function onScroll() {
@@ -71,6 +71,14 @@ export function Header({ navigation }) {
       window.removeEventListener('scroll', onScroll)
     }
   }, [])
+
+  useEffect(() => {
+    if (typeof document !== 'undefined' && typeof document.documentElement !== 'undefined')
+    {
+      console.log(`${document.documentElement.getAttribute('data-theme')}`)
+      settheme(document.documentElement.getAttribute('data-theme')) 
+    }
+  }, [theme])
 
   useEffect(() => {
     if (loginStatus != null) {
@@ -97,7 +105,7 @@ export function Header({ navigation }) {
       <div className="relative flex flex-grow basis-0 items-center">
         <Link href="/" aria-label="Home page">
           {/* <Logomark className="h-9 w-9 lg:hidden" /> */}
-          <img className='h-9 myicon' src={(theme ?? 'light') === 'dark' ? "/logon.png" : "/logol.png"} alt="" />
+          <img className='h-9 myicon' id='logo' src='' alt="" />
           {/* <Mylogo className='h-9 w-auto myicon' /> */}
           {/* <Logo className="hidden h-9 w-auto fill-slate-700 dark:fill-purple-100 lg:block" /> */}
         </Link>
